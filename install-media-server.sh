@@ -11,8 +11,6 @@ sudo apt-get update && sudo apt-get install -y qbittorrent-nox
 sudo cp qbittorrent.service /etc/systemd/system/
 sudo sed -i "s/{username}/$USER/g" /etc/systemd/system/qbittorrent.service
 sudo systemctl daemon-reload
-sudo su $USER -c qbittorrent-nox << EOF
-y
-EOF
+./initialize-qbittorrent.py
 sudo systemctl enable qbittorrent
 sudo systemctl start qbittorrent
