@@ -24,7 +24,7 @@ services:
       - PGID={userGroupId}
       - VERSION=docker
     volumes:
-      - {mediaFolderPath}:/data/videos
+      - {mediaFolderPath}:/media
       - {mediaFolderPath}:/config
     # Plex doesn't really run well behind NAT, so it is advised to use "host" network_mode
     network_mode: host
