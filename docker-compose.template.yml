@@ -1,0 +1,31 @@
+version: "3"
+services:
+  # torrent client to download media from the internet
+  qbittorrent:
+    image: linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID={userId}
+      - PGID={userGroupId}
+      - WEBUI_PORT=8080
+    volumes:
+      - {mediaFolderPath}:/media
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 8080:8080
+    restart: always
+  # media server to distribute downloaded media on the local network
+  plex:
+    image: linuxserver/plex
+    container_name: plex
+    environment:
+      - PUID={userId}
+      - PGID={userGroupId}
+      - VERSION=docker
+    volumes:
+      - {mediaFolderPath}:/data/videos
+      - {mediaFolderPath}:/config
+    # Plex doesn't really run well behind NAT, so it is advised to use "host" network_mode
+    network_mode: host
+    restart: always
