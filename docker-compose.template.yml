@@ -25,7 +25,7 @@ services:
       - VERSION=docker
     volumes:
       - {mediaFolderPath}:/media
-      - {mediaFolderPath}:/config
+      - {configFolderPath}:/config
     # Plex doesn't really run well behind NAT, so it is advised to use "host" network_mode
     network_mode: host
     restart: always

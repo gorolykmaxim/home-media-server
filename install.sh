@@ -6,7 +6,9 @@ sudo systemctl enable docker
 sudo systemctl start docker
 
 # Prepare directories for container mounting
-MEDIA_FOLDER_PATH=`readlink -f ~/Downloads`
+ROOT_FOLDER_PATH=`readlink -f ~/Downloads`
+MEDIA_FOLDER_PATH=${ROOT_FOLDER_PATH}/media
+mkdir ${ROOT_FOLDER_PATH}
 mkdir ${MEDIA_FOLDER_PATH}
 
 # Create docker-compose.yml from template
@@ -16,6 +18,7 @@ GROUP_ID=`id -g ${USER_NAME}`
 cp docker-compose.template.yml docker-compose.yml
 sed -i "s/{userId}/${USER_ID}/g" docker-compose.yml
 sed -i "s/{userGroupId}/${GROUP_ID}/g" docker-compose.yml
+sed -i "s@{configFolderPath}@${ROOT_FOLDER_PATH}@g" docker-compose.yml
 sed -i "s@{mediaFolderPath}@${MEDIA_FOLDER_PATH}@g" docker-compose.yml
 
 # Deploy containers
