@@ -1,0 +1,17 @@
+version: "3"
+services:
+  # torrent client to download media from the internet
+  qbittorrent:
+    environment:
+      - PUID={userId}
+      - PGID={userGroupId}
+    volumes:
+      - {mediaFolderPath}:/media
+  # media server to distribute downloaded media on the local network
+  plex:
+    environment:
+      - PUID={userId}
+      - PGID={userGroupId}
+    volumes:
+      - {mediaFolderPath}:/media
+      - {configFolderPath}:/config
