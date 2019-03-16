@@ -31,5 +31,5 @@ services:
       - 80:80
     volumes:
       - ./web-ui/nginx.conf:/etc/nginx/nginx.conf
-      - ./web-ui/dist/web-ui:/web-ui
+      - ./web-ui:/web-ui
     restart: always
