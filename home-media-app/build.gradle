@@ -4,6 +4,7 @@ plugins {
 }
 
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'war'
 
 group = 'com.gorolykmaxim'
 version = '1.0.0'
