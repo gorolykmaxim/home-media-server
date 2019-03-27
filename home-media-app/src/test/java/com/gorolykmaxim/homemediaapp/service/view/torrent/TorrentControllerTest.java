@@ -5,6 +5,7 @@ import com.gorolykmaxim.homemediaapp.model.torrent.command.TorrentFactory;
 import com.gorolykmaxim.homemediaapp.model.torrent.command.TorrentRepository;
 import com.gorolykmaxim.homemediaapp.model.torrent.query.DownloadingTorrent;
 import com.gorolykmaxim.homemediaapp.model.torrent.query.DownloadingTorrentRepository;
+import com.gorolykmaxim.homemediaapp.service.view.ViewError;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +45,12 @@ public class TorrentControllerTest {
         Assert.assertEquals(torrentList, model.get("torrentList"));
     }
 
+    @Test(expected = ViewError.class)
+    public void failToShowTorrentList() {
+        Mockito.when(downloadingTorrentRepository.findAll()).thenThrow(Mockito.mock(RuntimeException.class));
+        controller.showTorrentList();
+    }
+
     @Test
     public void showDownloadTorrentForm() {
         ModelAndView modelAndView = controller.showDownloadTorrentForm();
@@ -60,6 +67,13 @@ public class TorrentControllerTest {
         Mockito.verify(torrentRepository).deleteById(id);
     }
 
+    @Test(expected = ViewError.class)
+    public void failToDeleteTorrentById() {
+        String id = UUID.randomUUID().toString();
+        Mockito.doThrow(Mockito.mock(RuntimeException.class)).when(torrentRepository).deleteById(id);
+        controller.deleteTorrentById(id);
+    }
+
     @Test
     public void downloadTorrent() {
         TorrentPrototype prototype = new TorrentPrototype();
@@ -70,5 +84,16 @@ public class TorrentControllerTest {
         String viewName = controller.downloadTorrent(prototype);
         Assert.assertEquals("redirect:/torrent", viewName);
         Mockito.verify(torrentRepository).save(torrent);
+    }
+
+    @Test(expected = ViewError.class)
+    public void failToDownloadTorrent() {
+        TorrentPrototype prototype = new TorrentPrototype();
+        prototype.setMagnetLink("magnet uri");
+        prototype.setDownloadFolder(defaultDownloadingFolder);
+        Torrent torrent = Mockito.mock(Torrent.class);
+        Mockito.when(factory.createMagnet(prototype.getMagnetLink(), prototype.getDownloadFolder())).thenReturn(torrent);
+        Mockito.doThrow(Mockito.mock(RuntimeException.class)).when(torrentRepository).save(torrent);
+        controller.downloadTorrent(prototype);
     }
 }

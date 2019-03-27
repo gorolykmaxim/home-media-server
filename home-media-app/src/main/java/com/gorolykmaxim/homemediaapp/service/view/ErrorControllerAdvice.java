@@ -10,7 +10,7 @@ import java.io.StringWriter;
 @ControllerAdvice
 public class ErrorControllerAdvice {
 
-    @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler(ViewError.class)
     public ModelAndView showError(Throwable e) {
         ModelAndView modelAndView = new ModelAndView("error");
         StringWriter errorStackTraceWriter = new StringWriter();

@@ -4,6 +4,7 @@ import com.gorolykmaxim.homemediaapp.model.torrent.command.Torrent;
 import com.gorolykmaxim.homemediaapp.model.torrent.command.TorrentFactory;
 import com.gorolykmaxim.homemediaapp.model.torrent.command.TorrentRepository;
 import com.gorolykmaxim.homemediaapp.model.torrent.query.DownloadingTorrentRepository;
+import com.gorolykmaxim.homemediaapp.service.view.ViewError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -36,9 +37,13 @@ public class TorrentController {
 
     @GetMapping
     public ModelAndView showTorrentList() {
-        ModelAndView modelAndView = new ModelAndView("torrent/list");
-        modelAndView.addObject("torrentList", downloadingTorrentRepository.findAll());
-        return modelAndView;
+        try {
+            ModelAndView modelAndView = new ModelAndView("torrent/list");
+            modelAndView.addObject("torrentList", downloadingTorrentRepository.findAll());
+            return modelAndView;
+        } catch (RuntimeException e) {
+            throw new ViewError(e);
+        }
     }
 
     @GetMapping("download")
@@ -50,15 +55,23 @@ public class TorrentController {
 
     @GetMapping("delete/{id}")
     public String deleteTorrentById(@PathVariable("id") String id) {
-        torrentRepository.deleteById(id);
-        return "redirect:/torrent";
+        try {
+            torrentRepository.deleteById(id);
+            return "redirect:/torrent";
+        } catch (RuntimeException e) {
+            throw new ViewError(e);
+        }
     }
 
     @PostMapping("download")
     public String downloadTorrent(TorrentPrototype prototype) {
-        Torrent torrent = factory.createMagnet(prototype.getMagnetLink(), prototype.getDownloadFolder());
-        torrentRepository.save(torrent);
-        return "redirect:/torrent";
+        try {
+            Torrent torrent = factory.createMagnet(prototype.getMagnetLink(), prototype.getDownloadFolder());
+            torrentRepository.save(torrent);
+            return "redirect:/torrent";
+        } catch (RuntimeException e) {
+            throw new ViewError(e);
+        }
     }
 
 }
