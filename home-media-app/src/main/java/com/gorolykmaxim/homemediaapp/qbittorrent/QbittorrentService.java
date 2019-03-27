@@ -1,5 +1,6 @@
 package com.gorolykmaxim.homemediaapp.qbittorrent;
 
+import com.gorolykmaxim.homemediaapp.common.EmptyBodyError;
 import com.gorolykmaxim.homemediaapp.model.torrent.DownloadingTorrent;
 import com.gorolykmaxim.homemediaapp.model.torrent.TorrentService;
 import org.springframework.core.ParameterizedTypeReference;
@@ -8,6 +9,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -35,8 +37,12 @@ public class QbittorrentService implements TorrentService {
             HttpHeaders httpHeaders = new HttpHeaders();
             authorization.applyTo(httpHeaders);
             HttpEntity request = new HttpEntity(httpHeaders);
-            ResponseEntity<List<Map<String, String>>> response = restTemplate.exchange(baseUri.resolve("/query/torrents").toString(),
-                    HttpMethod.GET, request, new ParameterizedTypeReference<List<Map<String, String>>>() {}, parameters);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUri.resolve("/query/torrents").toString());
+            for (Map.Entry<String, String> parameter: parameters.entrySet()) {
+                builder.queryParam(parameter.getKey(), parameter.getValue());
+            }
+            ResponseEntity<List<Map<String, String>>> response = restTemplate.exchange(builder.build().toUri(),
+                    HttpMethod.GET, request, new ParameterizedTypeReference<List<Map<String, String>>>() {});
             List<Map<String, String>> body = response.getBody();
             if (body == null) {
                 throw new EmptyBodyError();
@@ -87,12 +93,6 @@ public class QbittorrentService implements TorrentService {
             deleteTorrentById(id);
         } catch (RuntimeException e) {
             throw new DeleteTorrentError(baseUri, id, e);
-        }
-    }
-
-    public static class EmptyBodyError extends RuntimeException {
-        public EmptyBodyError() {
-            super("Response body is empty");
         }
     }
 
