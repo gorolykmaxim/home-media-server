@@ -1,6 +1,6 @@
 package com.gorolykmaxim.homemediaapp.qbittorrent;
 
-import com.gorolykmaxim.homemediaapp.model.torrent.query.DownloadingTorrent;
+import com.gorolykmaxim.homemediaapp.model.torrent.DownloadingTorrent;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -110,31 +110,33 @@ public class QbittorrentServiceTest {
     }
 
     @Test
-    public void findAll() {
+    public void find() {
+        Map<String, String> uriParameters = createFindAllUriParameters();
         Qbittorrent expectedTorrent = Mockito.mock(Qbittorrent.class);
         ResponseEntity<List<Map<String, String>>> expectedResponse = createFindAllResponse(false);
         HttpEntity expectedRequest = createFindAllRequest();
         Mockito.when(restTemplate.exchange(baseUri.resolve("/query/torrents").toString(), HttpMethod.GET,
                 expectedRequest, new ParameterizedTypeReference<List<Map<String, String>>>() {},
-                createFindAllUriParameters()))
+                uriParameters))
                 .thenReturn(expectedResponse);
         Mockito.when(factory.create(expectedResponse.getBody().get(0))).thenReturn(expectedTorrent);
-        List<DownloadingTorrent> torrents = service.findAll();
+        List<DownloadingTorrent> torrents = service.find(uriParameters);
         Mockito.verify(authorization).applyTo(expectedRequest.getHeaders());
         Assert.assertEquals(Collections.singletonList(expectedTorrent), torrents);
     }
 
     @Test
-    public void renewAuthorizationAndFindAll() {
+    public void renewAuthorizationAndFind() {
+        Map<String, String> uriParameters = createFindAllUriParameters();
         Qbittorrent expectedTorrent = Mockito.mock(Qbittorrent.class);
         ResponseEntity<List<Map<String, String>>> expectedResponse = createFindAllResponse(false);
         HttpEntity expectedRequest = createFindAllRequest();
         Mockito.when(restTemplate.exchange(baseUri.resolve("/query/torrents").toString(), HttpMethod.GET,
                 expectedRequest, new ParameterizedTypeReference<List<Map<String, String>>>() {},
-                createFindAllUriParameters()))
+                uriParameters))
                 .thenAnswer(new ForbiddenThenReturnTorrentsAnswer(expectedResponse));
         Mockito.when(factory.create(expectedResponse.getBody().get(0))).thenReturn(expectedTorrent);
-        List<DownloadingTorrent> torrents = service.findAll();
+        List<DownloadingTorrent> torrents = service.find(uriParameters);
         InOrder order = Mockito.inOrder(authorization);
         order.verify(authorization).applyTo(expectedRequest.getHeaders());
         order.verify(authorization).renew();
@@ -143,24 +145,26 @@ public class QbittorrentServiceTest {
     }
 
     @Test(expected = QbittorrentService.GetTorrentsError.class)
-    public void failToFindAllDueToEmptyBody() {
+    public void failToFindDueToEmptyBody() {
+        Map<String, String> uriParameters = createFindAllUriParameters();
         ResponseEntity<List<Map<String, String>>> expectedResponse = createFindAllResponse(true);
         HttpEntity expectedRequest = createFindAllRequest();
         Mockito.when(restTemplate.exchange(baseUri.resolve("/query/torrents").toString(), HttpMethod.GET,
                 expectedRequest, new ParameterizedTypeReference<List<Map<String, String>>>() {},
-                createFindAllUriParameters()))
+                uriParameters))
                 .thenReturn(expectedResponse);
-        service.findAll();
+        service.find(uriParameters);
     }
 
     @Test(expected = QbittorrentService.GetTorrentsError.class)
-    public void failToFindAll() {
+    public void failToFind() {
+        Map<String, String> uriParameters = createFindAllUriParameters();
         HttpEntity expectedRequest = createFindAllRequest();
         Mockito.when(restTemplate.exchange(baseUri.resolve("/query/torrents").toString(), HttpMethod.GET,
                 expectedRequest, new ParameterizedTypeReference<List<Map<String, String>>>() {},
-                createFindAllUriParameters()))
+                uriParameters))
                 .thenThrow(Mockito.mock(RuntimeException.class));
-        service.findAll();
+        service.find(uriParameters);
     }
 
     private HttpEntity<MultiValueMap<String, String>> createDownloadRequest() {

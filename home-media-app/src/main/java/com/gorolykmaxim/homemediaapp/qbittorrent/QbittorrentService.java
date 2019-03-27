@@ -1,8 +1,7 @@
 package com.gorolykmaxim.homemediaapp.qbittorrent;
 
-import com.gorolykmaxim.homemediaapp.model.torrent.command.TorrentService;
-import com.gorolykmaxim.homemediaapp.model.torrent.query.DownloadingTorrent;
-import com.gorolykmaxim.homemediaapp.model.torrent.query.DownloadingTorrentRepository;
+import com.gorolykmaxim.homemediaapp.model.torrent.DownloadingTorrent;
+import com.gorolykmaxim.homemediaapp.model.torrent.TorrentService;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
@@ -11,12 +10,11 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class QbittorrentService implements TorrentService, DownloadingTorrentRepository {
+public class QbittorrentService implements TorrentService {
 
     private RestTemplate restTemplate;
     private QbittorrentAuthorization authorization;
@@ -29,6 +27,28 @@ public class QbittorrentService implements TorrentService, DownloadingTorrentRep
         this.authorization = authorization;
         this.factory = factory;
         this.baseUri = baseUri;
+    }
+
+    @Override
+    public List<DownloadingTorrent> find(Map<String, String> parameters) {
+        try {
+            HttpHeaders httpHeaders = new HttpHeaders();
+            authorization.applyTo(httpHeaders);
+            HttpEntity request = new HttpEntity(httpHeaders);
+            ResponseEntity<List<Map<String, String>>> response = restTemplate.exchange(baseUri.resolve("/query/torrents").toString(),
+                    HttpMethod.GET, request, new ParameterizedTypeReference<List<Map<String, String>>>() {}, parameters);
+            List<Map<String, String>> body = response.getBody();
+            if (body == null) {
+                throw new EmptyBodyError();
+            }
+            return body.stream().map(factory::create).collect(Collectors.toList());
+        } catch (HttpClientErrorException.Forbidden e) {
+            // Possibly existing authorization has expired. Try to renew.
+            authorization.renew();
+            return find(parameters);
+        } catch (RuntimeException e) {
+            throw new GetTorrentsError(baseUri, parameters, e);
+        }
     }
 
     @Override
@@ -67,30 +87,6 @@ public class QbittorrentService implements TorrentService, DownloadingTorrentRep
             deleteTorrentById(id);
         } catch (RuntimeException e) {
             throw new DeleteTorrentError(baseUri, id, e);
-        }
-    }
-
-    @Override
-    public List<DownloadingTorrent> findAll() throws GetTorrentsError {
-        Map<String, String> uriParameters = new HashMap<>();
-        uriParameters.put("sort", "progress");
-        try {
-            HttpHeaders httpHeaders = new HttpHeaders();
-            authorization.applyTo(httpHeaders);
-            HttpEntity request = new HttpEntity(httpHeaders);
-            ResponseEntity<List<Map<String, String>>> response = restTemplate.exchange(baseUri.resolve("/query/torrents").toString(),
-                    HttpMethod.GET, request, new ParameterizedTypeReference<List<Map<String, String>>>() {}, uriParameters);
-            List<Map<String, String>> body = response.getBody();
-            if (body == null) {
-                throw new EmptyBodyError();
-            }
-            return body.stream().map(factory::create).collect(Collectors.toList());
-        } catch (HttpClientErrorException.Forbidden e) {
-            // Possibly existing authorization has expired. Try to renew.
-            authorization.renew();
-            return findAll();
-        } catch (RuntimeException e) {
-            throw new GetTorrentsError(baseUri, uriParameters, e);
         }
     }
 

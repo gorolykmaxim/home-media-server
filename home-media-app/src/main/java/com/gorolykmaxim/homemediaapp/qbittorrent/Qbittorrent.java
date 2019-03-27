@@ -4,7 +4,7 @@ import com.gorolykmaxim.homemediaapp.common.DownloadSpeed;
 import com.gorolykmaxim.homemediaapp.common.DownloadSpeedFormatter;
 import com.gorolykmaxim.homemediaapp.common.DurationFormatter;
 import com.gorolykmaxim.homemediaapp.common.SizeFormatter;
-import com.gorolykmaxim.homemediaapp.model.torrent.query.DownloadingTorrent;
+import com.gorolykmaxim.homemediaapp.model.torrent.DownloadingTorrent;
 
 import java.text.NumberFormat;
 import java.time.Duration;

@@ -1,4 +1,4 @@
-package com.gorolykmaxim.homemediaapp.model.torrent.command;
+package com.gorolykmaxim.homemediaapp.model.torrent;
 
 public class TorrentRepository {
 

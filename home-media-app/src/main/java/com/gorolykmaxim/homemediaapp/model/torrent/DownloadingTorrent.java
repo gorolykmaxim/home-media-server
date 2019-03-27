@@ -1,4 +1,4 @@
-package com.gorolykmaxim.homemediaapp.model.torrent.query;
+package com.gorolykmaxim.homemediaapp.model.torrent;
 
 public interface DownloadingTorrent {
     String getId();

@@ -1,9 +1,5 @@
 package com.gorolykmaxim.homemediaapp.model.torrent;
 
-import com.gorolykmaxim.homemediaapp.model.torrent.command.Torrent;
-import com.gorolykmaxim.homemediaapp.model.torrent.command.TorrentFactory;
-import com.gorolykmaxim.homemediaapp.model.torrent.command.TorrentRepository;
-import com.gorolykmaxim.homemediaapp.model.torrent.command.TorrentService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

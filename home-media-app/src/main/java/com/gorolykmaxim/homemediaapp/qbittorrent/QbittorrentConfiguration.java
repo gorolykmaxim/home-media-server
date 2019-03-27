@@ -4,8 +4,7 @@ import com.gorolykmaxim.homemediaapp.common.DownloadSpeedFormatter;
 import com.gorolykmaxim.homemediaapp.common.DurationFormatter;
 import com.gorolykmaxim.homemediaapp.common.SizeFormatter;
 import com.gorolykmaxim.homemediaapp.common.keyvalue.KeyValueRepository;
-import com.gorolykmaxim.homemediaapp.model.torrent.command.TorrentService;
-import com.gorolykmaxim.homemediaapp.model.torrent.query.DownloadingTorrentRepository;
+import com.gorolykmaxim.homemediaapp.model.torrent.TorrentService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,27 +24,9 @@ public class QbittorrentConfiguration {
     private String password;
 
     @Bean
-    public DownloadingTorrentRepository downloadingTorrentRepository(KeyValueRepository keyValueRepository,
-                                                                     SizeFormatter sizeFormatter,
-                                                                     DurationFormatter durationFormatter,
-                                                                     DownloadSpeedFormatter downloadSpeedFormatter,
-                                                                     NumberFormat percentFormat) {
-        return qbittorrentService(keyValueRepository, sizeFormatter, durationFormatter, downloadSpeedFormatter,
-                percentFormat);
-    }
-
-    @Bean
     public TorrentService torrentService(KeyValueRepository keyValueRepository, SizeFormatter sizeFormatter,
                                          DurationFormatter durationFormatter,
                                          DownloadSpeedFormatter downloadSpeedFormatter, NumberFormat percentFormat) {
-        return qbittorrentService(keyValueRepository, sizeFormatter, durationFormatter, downloadSpeedFormatter,
-                percentFormat);
-    }
-
-    public QbittorrentService qbittorrentService(KeyValueRepository keyValueRepository,
-                                                 SizeFormatter sizeFormatter, DurationFormatter durationFormatter,
-                                                 DownloadSpeedFormatter downloadSpeedFormatter,
-                                                 NumberFormat percentFormat) {
         RestTemplate restTemplate = new RestTemplate();
         URI uri = URI.create(baseUri);
         QbittorrentAuthorization authorization = new QbittorrentAuthorization(restTemplate, userName, password, uri,

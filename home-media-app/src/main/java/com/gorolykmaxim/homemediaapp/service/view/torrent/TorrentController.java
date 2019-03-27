@@ -1,9 +1,9 @@
 package com.gorolykmaxim.homemediaapp.service.view.torrent;
 
-import com.gorolykmaxim.homemediaapp.model.torrent.command.Torrent;
-import com.gorolykmaxim.homemediaapp.model.torrent.command.TorrentFactory;
-import com.gorolykmaxim.homemediaapp.model.torrent.command.TorrentRepository;
-import com.gorolykmaxim.homemediaapp.model.torrent.query.DownloadingTorrentRepository;
+import com.gorolykmaxim.homemediaapp.model.torrent.Torrent;
+import com.gorolykmaxim.homemediaapp.model.torrent.TorrentFactory;
+import com.gorolykmaxim.homemediaapp.model.torrent.TorrentRepository;
+import com.gorolykmaxim.homemediaapp.model.torrent.DownloadingTorrentRepository;
 import com.gorolykmaxim.homemediaapp.service.view.ViewError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
