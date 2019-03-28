@@ -7,10 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.net.URI;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 public class TvShow {
     @Id
+    private UUID id;
     private String name;
     private String directory;
     @Embedded
@@ -18,10 +20,15 @@ public class TvShow {
 
     protected TvShow() {}
 
-    TvShow(String name, String directory, URI thumbnail) {
+    TvShow(UUID id, String name, String directory, URI thumbnail) {
+        this.id = id;
         this.name = name;
         this.directory = directory;
         this.thumbnail = new PersistableUri(thumbnail);
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getName() {
@@ -30,6 +37,10 @@ public class TvShow {
 
     public String getDirectory() {
         return directory;
+    }
+
+    public void setThumbnail(URI thumbnail) {
+        this.thumbnail = new PersistableUri(thumbnail);
     }
 
     public URI getThumbnail() {
@@ -41,11 +52,11 @@ public class TvShow {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TvShow tvShow = (TvShow) o;
-        return Objects.equals(name, tvShow.name);
+        return Objects.equals(id, tvShow.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(id);
     }
 }

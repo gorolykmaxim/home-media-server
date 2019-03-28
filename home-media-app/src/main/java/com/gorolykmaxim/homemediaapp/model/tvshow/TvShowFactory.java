@@ -3,6 +3,7 @@ package com.gorolykmaxim.homemediaapp.model.tvshow;
 import com.gorolykmaxim.homemediaapp.common.PathResolver;
 
 import java.net.URI;
+import java.util.UUID;
 
 public class TvShowFactory {
     private PathResolver pathResolver;
@@ -14,10 +15,10 @@ public class TvShowFactory {
     }
 
     public TvShow create(String name, Thumbnail thumbnail) {
-        return new TvShow(name, pathResolver.resolve(name), thumbnail.getUri());
+        return new TvShow(UUID.randomUUID(), name, pathResolver.resolve(name), thumbnail.getUri());
     }
 
     public TvShow create(String name) {
-        return new TvShow(name, pathResolver.resolve(name), defaultThumbnail);
+        return new TvShow(UUID.randomUUID(), name, pathResolver.resolve(name), defaultThumbnail);
     }
 }

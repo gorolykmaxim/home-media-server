@@ -44,21 +44,9 @@ public class TvShowTest {
     }
 
     @Test
-    public void twoTvShowsAreSame() {
-        Thumbnail thumbnail = Mockito.mock(Thumbnail.class);
-        Mockito.when(thumbnail.getUri()).thenReturn(defaultThumbnail);
-        TvShow tvShow1 = factory.create(name);
-        TvShow tvShow2 = factory.create(name, thumbnail);
-        Assert.assertEquals(tvShow1, tvShow2);
-        Assert.assertEquals(tvShow1.hashCode(), tvShow2.hashCode());
-    }
-
-    @Test
     public void tvShowsAreDifferent() {
-        Thumbnail thumbnail = Mockito.mock(Thumbnail.class);
-        Mockito.when(thumbnail.getUri()).thenReturn(URI.create("http://facebook.com/profile.png"));
         TvShow tvShow1 = factory.create(name);
-        TvShow tvShow2 = factory.create("another show");
+        TvShow tvShow2 = factory.create(name);
         Assert.assertNotEquals(tvShow1, tvShow2);
         Assert.assertNotEquals(tvShow1.hashCode(), tvShow2.hashCode());
     }
