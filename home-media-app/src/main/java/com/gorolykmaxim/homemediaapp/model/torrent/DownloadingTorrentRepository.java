@@ -16,4 +16,11 @@ public class DownloadingTorrentRepository {
         parameters.put("sort", "progress");
         return service.find(parameters);
     }
+
+    public List<DownloadingTorrent> findDownloading() {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("sort", "progress");
+        parameters.put("filter", "downloading");
+        return service.find(parameters);
+    }
 }

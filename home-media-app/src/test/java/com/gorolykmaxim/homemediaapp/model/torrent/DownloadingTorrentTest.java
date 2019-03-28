@@ -29,4 +29,15 @@ public class DownloadingTorrentTest {
         List<DownloadingTorrent> actualDownloadingTorrentList = repository.findAll();
         Assert.assertEquals(downloadingTorrentList, actualDownloadingTorrentList);
     }
+
+    @Test
+    public void findDownloading() {
+        List<DownloadingTorrent> downloadingTorrentList = Collections.singletonList(Mockito.mock(DownloadingTorrent.class));
+        Map<String, String> expectedParameters = new HashMap<>();
+        expectedParameters.put("sort", "progress");
+        expectedParameters.put("filter", "downloading");
+        Mockito.when(service.find(expectedParameters)).thenReturn(downloadingTorrentList);
+        List<DownloadingTorrent> actualDownloadingTorrentList = repository.findDownloading();
+        Assert.assertEquals(downloadingTorrentList, actualDownloadingTorrentList);
+    }
 }
