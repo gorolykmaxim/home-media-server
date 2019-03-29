@@ -15,3 +15,6 @@ services:
     volumes:
       - {mediaFolderPath}:/media
       - {configFolderPath}:/config
+  home-media-app:
+    volumes:
+      - {mediaFolderPath}:/shows
