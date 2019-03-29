@@ -15,6 +15,6 @@ public class HomeMediaAppControllerTest {
 
     @Test
     public void index() {
-        Assert.assertEquals("redirect:/torrent", controller.index());
+        Assert.assertEquals("redirect:/tv-show", controller.index());
     }
 }

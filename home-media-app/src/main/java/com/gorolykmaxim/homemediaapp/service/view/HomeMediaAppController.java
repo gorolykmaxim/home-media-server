@@ -10,7 +10,7 @@ public class HomeMediaAppController {
 
     @GetMapping
     public String index() {
-        return "redirect:/torrent";
+        return "redirect:/tv-show";
     }
 
 }

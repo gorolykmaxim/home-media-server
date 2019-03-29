@@ -1,8 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="app" tagdir="/WEB-INF/tags" %>
-
-<c:url var="submitUrl" value="/torrent/download"/>
-
 <!DOCTYPE html>
 <html>
     <head>

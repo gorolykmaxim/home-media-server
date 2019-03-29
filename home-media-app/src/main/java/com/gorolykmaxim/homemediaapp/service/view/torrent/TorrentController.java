@@ -1,9 +1,9 @@
 package com.gorolykmaxim.homemediaapp.service.view.torrent;
 
+import com.gorolykmaxim.homemediaapp.model.torrent.DownloadingTorrentRepository;
 import com.gorolykmaxim.homemediaapp.model.torrent.Torrent;
 import com.gorolykmaxim.homemediaapp.model.torrent.TorrentFactory;
 import com.gorolykmaxim.homemediaapp.model.torrent.TorrentRepository;
-import com.gorolykmaxim.homemediaapp.model.torrent.DownloadingTorrentRepository;
 import com.gorolykmaxim.homemediaapp.service.view.ViewError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,6 +40,7 @@ public class TorrentController {
         try {
             ModelAndView modelAndView = new ModelAndView("torrent/list");
             modelAndView.addObject("torrentList", downloadingTorrentRepository.findAll());
+            modelAndView.addObject("torrentDeleteUrlPrefix", "/torrent/delete");
             return modelAndView;
         } catch (RuntimeException e) {
             throw new ViewError(e);
@@ -50,6 +51,7 @@ public class TorrentController {
     public ModelAndView showDownloadTorrentForm() {
         ModelAndView modelAndView = new ModelAndView("torrent/new");
         modelAndView.addObject("defaultDownloadFolder", defaultDownloadFolder);
+        modelAndView.addObject("submitUrl", "/torrent/download");
         return modelAndView;
     }
 

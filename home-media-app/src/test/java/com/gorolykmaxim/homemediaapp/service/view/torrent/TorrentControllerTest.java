@@ -43,6 +43,7 @@ public class TorrentControllerTest {
         Assert.assertEquals("torrent/list", modelAndView.getViewName());
         Map<String, Object> model = modelAndView.getModel();
         Assert.assertEquals(torrentList, model.get("torrentList"));
+        Assert.assertEquals("/torrent/delete", model.get("torrentDeleteUrlPrefix"));
     }
 
     @Test(expected = ViewError.class)
@@ -57,6 +58,7 @@ public class TorrentControllerTest {
         Assert.assertEquals("torrent/new", modelAndView.getViewName());
         Map<String, Object> model = modelAndView.getModel();
         Assert.assertEquals(defaultDownloadingFolder, model.get("defaultDownloadFolder"));
+        Assert.assertEquals("/torrent/download", model.get("submitUrl"));
     }
 
     @Test
