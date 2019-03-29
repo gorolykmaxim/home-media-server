@@ -22,6 +22,26 @@ public class TorrentTest {
         repository = new TorrentRepository(service);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void failToCreateWithNoMagnetLink() {
+        factory.createMagnet(null, downloadFolder);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void failToCreateWithEmptyMagnetLink() {
+        factory.createMagnet("", downloadFolder);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void failToCreateWithNoDownloadFolder() {
+        factory.createMagnet("manget", null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void failToCreateWithEmptyDownloadFolder() {
+        factory.createMagnet("magnet", "");
+    }
+
     @Test
     public void twoMagnetTorrentsAreSame() {
         Torrent torrent1 = factory.createMagnet("magnet1", "/downloads/");

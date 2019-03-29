@@ -7,7 +7,6 @@ import org.mockito.Mockito;
 
 import java.net.URI;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,16 +37,14 @@ public class TvShowTest {
         Assert.assertEquals(defaultThumbnail, tvShow.getThumbnail());
     }
 
-    @Test
-    public void createWithCustomThumbnail() {
-        URI uri = URI.create("http://facebook.com/profile.png");
-        Thumbnail thumbnail = Mockito.mock(Thumbnail.class);
-        Mockito.when(thumbnail.getUri()).thenReturn(uri);
-        TvShow tvShow = factory.create(name, thumbnail);
-        Assert.assertNotNull(tvShow.getId());
-        Assert.assertEquals(name, tvShow.getName());
-        Assert.assertEquals(name, tvShow.getDirectory());
-        Assert.assertEquals(uri, tvShow.getThumbnail());
+    @Test(expected = IllegalArgumentException.class)
+    public void failToCreateWithNoName() {
+        factory.create(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void failToCreateWithEmptyName() {
+        factory.create("");
     }
 
     @Test
