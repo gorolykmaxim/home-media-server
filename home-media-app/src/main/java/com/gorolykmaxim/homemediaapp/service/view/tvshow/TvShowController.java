@@ -50,7 +50,7 @@ public class TvShowController {
         viewableEpisodeFactory = new ViewableEpisodeFactory();
     }
 
-    @Value("${home-media-app.torrent.default-download-folder:/downloads/}")
+    @Value("${home-media-app.torrent.default-download-folder:/media/}")
     public void setTorrentDownloadFolder(String torrentDownloadFolder) {
         torrentPathResolver = new PathResolver(torrentDownloadFolder);
     }
