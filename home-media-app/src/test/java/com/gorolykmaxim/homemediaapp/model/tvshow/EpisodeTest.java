@@ -1,5 +1,7 @@
 package com.gorolykmaxim.homemediaapp.model.tvshow;
 
+import com.gorolykmaxim.homemediaapp.model.tvshow.episode.Episode;
+import com.gorolykmaxim.homemediaapp.model.tvshow.episode.EpisodeFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

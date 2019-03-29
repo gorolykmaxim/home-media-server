@@ -1,24 +1,20 @@
 package com.gorolykmaxim.homemediaapp.model.tvshow;
 
-import com.gorolykmaxim.homemediaapp.common.PathResolver;
-
 import java.net.URI;
 import java.util.UUID;
 
 public class TvShowFactory {
-    private PathResolver pathResolver;
     private URI defaultThumbnail;
 
-    public TvShowFactory(PathResolver pathResolver, URI defaultThumbnail) {
-        this.pathResolver = pathResolver;
+    public TvShowFactory(URI defaultThumbnail) {
         this.defaultThumbnail = defaultThumbnail;
     }
 
     public TvShow create(String name, Thumbnail thumbnail) {
-        return new TvShow(UUID.randomUUID(), name, pathResolver.resolve(name), thumbnail.getUri());
+        return new TvShow(UUID.randomUUID(), name, name, thumbnail.getUri());
     }
 
     public TvShow create(String name) {
-        return new TvShow(UUID.randomUUID(), name, pathResolver.resolve(name), defaultThumbnail);
+        return new TvShow(UUID.randomUUID(), name, name, defaultThumbnail);
     }
 }
