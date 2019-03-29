@@ -18,3 +18,4 @@ services:
   home-media-app:
     volumes:
       - {mediaFolderPath}:/shows
+      - {configFolderPath}/data
