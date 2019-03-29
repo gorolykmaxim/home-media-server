@@ -8,13 +8,25 @@
     </head>
     <body>
         <app:navigation/>
-        <h1>${tvShow.name}</h1>
-        <img src="${tvShow.thumbnail}">
-        <a href="${editTvShowUrl}">Edit</a>
-        <c:forEach var="episode" items="${episodeList}">
-            <c:url var="deleteEpisodeUrl" value="/tv-show/${tvShow.id}/episode/${episode.name}/delete"/>
-            <p>${episode.name} ${episode.viewed}<a href="${deleteEpisodeUrl}">Delete</a></p>
-        </c:forEach>
-        <a href="${episodeAddUrl}">Add episode</a>
+        <div class="container">
+            <h3>${tvShow.name}</h3>
+            <img src="${tvShow.thumbnail}" class="img-fluid mb-3">
+            <a href="${episodeAddUrl}" class="btn btn-primary">Add episode</a>
+            <a href="${editTvShowUrl}" class="btn btn-secondary">Edit</a>
+            <ul class="list-group mt-3">
+                <c:forEach var="episode" items="${episodeList}">
+                    <c:url var="deleteEpisodeUrl" value="/tv-show/${tvShow.id}/episode/${episode.name}/delete"/>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            ${episode.name}
+                            <c:if test="${episode.viewed}">
+                                <span class="badge badge-primary badge-pill">viewed</span>
+                            </c:if>
+                        </div>
+                        <a href="${deleteEpisodeUrl}"><i class="fas fa-trash-alt text-danger"></i></a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
     </body>
 </html>

@@ -9,14 +9,20 @@
     </head>
     <body>
         <app:navigation/>
-        <c:forEach var="tvShow" items="${tvShowList}">
-            <c:url var="deleteUrl" value="/tv-show/${tvShow.id}/delete"/>
-            <c:url var="tvShowUrl" value="/tv-show/${tvShow.id}"/>
-            <a href="${tvShowUrl}">${tvShow.name}</a>
-            <img src="${tvShow.thumbnail}">
-            <a href="${deleteUrl}">Delete</a>
-        </c:forEach>
-        <c:url var="addShowUrl" value="/tv-show/add"/>
-        <a href="${addShowUrl}">Add</a>
+        <div class="container">
+            <c:forEach var="tvShow" items="${tvShowList}">
+                <c:url var="deleteUrl" value="/tv-show/${tvShow.id}/delete"/>
+                <c:url var="tvShowUrl" value="/tv-show/${tvShow.id}"/>
+                <div class="card mb-3">
+                    <img src="${tvShow.thumbnail}" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">${tvShow.name}</h5>
+                        <a href="${tvShowUrl}" class="btn btn-primary">Open</a>
+                        <a href="${deleteUrl}" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </c:forEach>
+            <a href="${addShowUrl}" class="btn btn-primary btn-block">Add</a>
+        </div>
     </body>
 </html>

@@ -82,6 +82,7 @@ public class TvShowControllerTest {
         Assert.assertEquals("tv-show/list", modelAndView.getViewName());
         Map<String, Object> model = modelAndView.getModel();
         Assert.assertEquals(shows, model.get("tvShowList"));
+        Assert.assertEquals("/tv-show/add", model.get("addShowUrl"));
     }
 
     @Test

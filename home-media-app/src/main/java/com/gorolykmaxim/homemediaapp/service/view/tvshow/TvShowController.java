@@ -59,6 +59,7 @@ public class TvShowController {
     public ModelAndView showAll() {
         ModelAndView modelAndView = new ModelAndView("tv-show/list");
         modelAndView.addObject("tvShowList", tvShowRepository.findAll());
+        modelAndView.addObject("addShowUrl", "/tv-show/add");
         return modelAndView;
     }
 
