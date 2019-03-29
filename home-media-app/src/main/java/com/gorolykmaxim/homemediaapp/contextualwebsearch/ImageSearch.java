@@ -23,12 +23,16 @@ public class ImageSearch implements ThumbnailRepository {
     public Optional<Thumbnail> findThumbnailBySearchTermAndIndex(String searchTerm, int index) {
         Optional<CachedImage> possibleCachedImage = cache.findBySearchTermAndIndex(searchTerm, index);
         if (!possibleCachedImage.isPresent()) {
-            ImageList imageList = searchApi.findImagesBySearchTerm(searchTerm);
-            if (imageList.getImages().size() == 0) {
+            if (index > 0) {
                 return Optional.empty();
             } else {
-                cache.save(imageList, searchTerm);
-                return Optional.of(imageList.getImages().get(0));
+                ImageList imageList = searchApi.findImagesBySearchTerm(searchTerm);
+                if (imageList.getImages().size() == 0) {
+                    return Optional.empty();
+                } else {
+                    cache.save(imageList, searchTerm);
+                    return Optional.of(imageList.getImages().get(0));
+                }
             }
         } else {
             return Optional.of(possibleCachedImage.get());

@@ -27,7 +27,7 @@ public class ImageSearchTest {
         api = Mockito.mock(ImageSearchApi.class);
         search = new ImageSearch(cache, api);
         searchTerm = "kittens";
-        index = 5;
+        index = 0;
     }
 
     @Test
@@ -59,5 +59,14 @@ public class ImageSearchTest {
         Optional<Thumbnail> possibleThumbnail = search.findThumbnailBySearchTermAndIndex(searchTerm, index);
         Assert.assertFalse(possibleThumbnail.isPresent());
         Mockito.verify(cache, Mockito.never()).save(Mockito.any(), Mockito.anyString());
+    }
+
+    @Test
+    public void runOutOfThumbnails() {
+        index = 5;
+        Mockito.when(cache.findBySearchTermAndIndex(searchTerm, index)).thenReturn(Optional.empty());
+        Optional<Thumbnail> possibleThumbnail = search.findThumbnailBySearchTermAndIndex(searchTerm, index);
+        Assert.assertFalse(possibleThumbnail.isPresent());
+        Mockito.verify(api, Mockito.never()).findImagesBySearchTerm(searchTerm);
     }
 }
