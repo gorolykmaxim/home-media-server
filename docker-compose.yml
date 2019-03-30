@@ -29,7 +29,7 @@ services:
     restart: always
   # Plex logs listener, that notifies home-media-app about different events in Plex
   plex-listener:
-    image: gorolykmaxim/plex-listener:1.0.1
+    image: gorolykmaxim/plex-listener:1.0.2
     container_name: plex-listener
     depends_on:
       - plex
