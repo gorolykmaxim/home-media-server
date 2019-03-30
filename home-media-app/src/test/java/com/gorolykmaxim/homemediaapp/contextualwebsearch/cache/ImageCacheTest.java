@@ -52,9 +52,9 @@ public class ImageCacheTest {
     @Test
     public void save() {
         Image image = new Image();
-        image.setImageUrl(URI.create("http://twitter.com"));
+        image.setImageUrl("http://twitter.com");
         Image imageWithLongUri = new Image();
-        imageWithLongUri.setImageUrl(URI.create("http://url.to/image/with/uri/is/to/long/for/us/to/store"));
+        imageWithLongUri.setImageUrl("http://url.to/image/with/uri/is/to/long/for/us/to/store");
         ImageList imageList = new ImageList();
         imageList.setImages(Arrays.asList(image, imageWithLongUri));
         Mockito.when(factory.isUriSupported(imageWithLongUri.getUri())).thenReturn(false);

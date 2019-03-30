@@ -102,6 +102,7 @@ public class TvShowControllerTest {
         Assert.assertEquals(tvShow, model.get("tvShow"));
         Assert.assertEquals(expectedEpisodes, model.get("episodeList"));
         Assert.assertEquals(String.format("/tv-show/%s/edit", id), model.get("editTvShowUrl"));
+        Assert.assertEquals(String.format("/tv-show/%s/delete", id), model.get("deleteTvShowUrl"));
         Assert.assertEquals(String.format("/tv-show/%s/episode/add", id), model.get("episodeAddUrl"));
     }
 
@@ -364,6 +365,6 @@ public class TvShowControllerTest {
     private void assertThumbnailEditUrls(Map<String, Object> model, int index) {
         Assert.assertEquals(String.format("/tv-show/%s/thumbnail/save", id), model.get("submitUrl"));
         Assert.assertEquals(String.format("/tv-show/%s/thumbnail/edit/%s", id, index), model.get("nextThumbnailUrl"));
-        Assert.assertEquals("/tv-show", model.get("cancelUrl"));
+        Assert.assertEquals(String.format("/tv-show/%s", id), model.get("cancelUrl"));
     }
 }

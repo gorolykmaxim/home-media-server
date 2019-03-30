@@ -85,6 +85,7 @@ public class TvShowController {
             modelAndView.addObject("tvShow", tvShow);
             modelAndView.addObject("episodeList", viewableEpisodeList);
             modelAndView.addObject("editTvShowUrl", String.format("/tv-show/%s/edit", id));
+            modelAndView.addObject("deleteTvShowUrl", String.format("/tv-show/%s/delete", id));
             modelAndView.addObject("episodeAddUrl", String.format("/tv-show/%s/episode/add", id));
             return modelAndView;
         } catch (RuntimeException | TvShowRepository.TvShowDoesNotExistException e) {
@@ -212,7 +213,7 @@ public class TvShowController {
             }
             modelAndView.addObject("submitUrl", String.format("/tv-show/%s/thumbnail/save", id));
             modelAndView.addObject("nextThumbnailUrl", String.format("/tv-show/%s/thumbnail/edit/%s", id, nextIndex));
-            modelAndView.addObject("cancelUrl", "/tv-show");
+            modelAndView.addObject("cancelUrl", String.format("/tv-show/%s", id));
             return modelAndView;
         } catch (RuntimeException | TvShowRepository.TvShowDoesNotExistException e) {
             throw new ViewError(e);

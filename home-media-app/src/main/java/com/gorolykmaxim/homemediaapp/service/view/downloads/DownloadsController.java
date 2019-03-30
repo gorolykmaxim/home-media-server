@@ -1,6 +1,7 @@
 package com.gorolykmaxim.homemediaapp.service.view.downloads;
 
 import com.gorolykmaxim.homemediaapp.model.torrent.DownloadingTorrentRepository;
+import com.gorolykmaxim.homemediaapp.service.view.ViewError;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +18,12 @@ public class DownloadsController {
 
     @GetMapping
     public ModelAndView showDownloads() {
-        ModelAndView modelAndView = new ModelAndView("downloads");
-        modelAndView.addObject("downloads", downloadingTorrentRepository.findDownloading());
-        return modelAndView;
+        try {
+            ModelAndView modelAndView = new ModelAndView("downloads");
+            modelAndView.addObject("downloads", downloadingTorrentRepository.findDownloading());
+            return modelAndView;
+        } catch (RuntimeException e) {
+            throw new ViewError(e);
+        }
     }
 }

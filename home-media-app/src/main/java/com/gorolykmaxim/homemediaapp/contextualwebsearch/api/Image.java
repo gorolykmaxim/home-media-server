@@ -8,8 +8,12 @@ import java.util.Objects;
 public class Image implements Thumbnail {
     private URI imageUrl;
 
-    public void setImageUrl(URI imageUrl) {
-        this.imageUrl = imageUrl;
+    // Trick to make Jackson less harsh on URLs. When you specify URI attribute on entity, de-serialized by Jackson,
+    // Jackson does JSON serialization strictly on URLs and fails to serialize URLs that doesn't comply with the standard.
+    // In order to avoid it (since those invalid URLs are fine by the target browsers) we will tell Jackson that our
+    // URLs are simple strings, so Jackson won't do any assertions.
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = URI.create(imageUrl);
     }
 
     @Override
