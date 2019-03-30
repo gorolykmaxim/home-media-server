@@ -22,7 +22,7 @@ services:
     restart: always
   # web app to control media server from a mobile phone
   home-media-app:
-    image: gorolykmaxim/home-media-app:2.0.3
+    image: gorolykmaxim/home-media-app:2.0.4
     container_name: home-media-app
     ports:
       - 80:80
