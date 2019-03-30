@@ -4,6 +4,7 @@ import com.gorolykmaxim.homemediaapp.common.PathResolver;
 import com.gorolykmaxim.homemediaapp.model.tvshow.*;
 import com.gorolykmaxim.homemediaapp.model.tvshow.episode.EpisodeStorage;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class FileSystemStorage implements EpisodeStorage, TvShowStorage {
                     .filter(Files::isRegularFile)
                     .map(Path::getFileName)
                     .map(Path::toString)
+                    .map(FilenameUtils::removeExtension)
                     .sorted()
                     .collect(Collectors.toList());
         } catch (IOException e) {
@@ -39,7 +41,7 @@ public class FileSystemStorage implements EpisodeStorage, TvShowStorage {
         try {
             List<Path> pathsToDelete = Files.walk(Paths.get(pathResolver.resolve(tvShow.getDirectory())))
                     .filter(Files::isRegularFile)
-                    .filter(path -> path.getFileName().toString().equals(episodeName))
+                    .filter(path -> path.getFileName().toString().startsWith(episodeName))
                     .collect(Collectors.toList());
             for (Path path: pathsToDelete) {
                 Files.delete(path);

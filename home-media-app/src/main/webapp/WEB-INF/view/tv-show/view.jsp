@@ -30,7 +30,9 @@
                 <div class="col">
                     <ul class="list-group">
                         <c:forEach var="episode" items="${episodeList}">
-                            <c:url var="deleteEpisodeUrl" value="/tv-show/${tvShow.id}/episode/${episode.name}/delete"/>
+                            <c:url var="deleteEpisodeUrl" value="/tv-show/${tvShow.id}/episode/delete">
+                                <c:param name="name" value="${episode.name}"/>
+                            </c:url>
                             <li class="list-group-item flex-column">
                                 <p class="mb-2 app-truncate">${episode.name}</p>
                                 <div class="d-flex w-100 justify-content-between">

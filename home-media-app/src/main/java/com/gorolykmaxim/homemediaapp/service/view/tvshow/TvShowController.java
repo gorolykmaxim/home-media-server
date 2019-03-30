@@ -131,8 +131,8 @@ public class TvShowController {
         }
     }
 
-    @GetMapping("{id}/episode/{name}/delete")
-    public String deleteEpisodeOfTvShow(@PathVariable UUID id, @PathVariable String name) {
+    @GetMapping("{id}/episode/delete")
+    public String deleteEpisodeOfTvShow(@PathVariable UUID id, @RequestParam String name) {
         try {
             TvShow tvShow = tvShowRepository.findById(id);
             episodeRepository.deleteEpisodeOfTvShow(tvShow, name);
