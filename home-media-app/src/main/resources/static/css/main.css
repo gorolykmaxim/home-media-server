@@ -2,3 +2,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+a.app-clickable-card, a.app-clickable-card:hover {
+    color: inherit;
+}
+
+.app-text-above-image-container {
+    background: linear-gradient(to top, #00000000 60%, #00000040);
+}

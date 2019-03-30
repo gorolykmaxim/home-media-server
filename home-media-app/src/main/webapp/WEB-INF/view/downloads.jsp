@@ -8,6 +8,12 @@
     </head>
     <body>
         <app:navigation/>
-        <app:torrent-list torrents="${downloads}"/>
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col">
+                    <app:torrent-list torrents="${downloads}"/>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

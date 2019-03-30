@@ -7,7 +7,7 @@
         <c:if test="${not empty deleteUrlPrefix}">
             <c:url var="deleteUrl" value="${deleteUrlPrefix}/${torrent.id}"/>
         </c:if>
-        <div class="list-group-item list-group-item-action">
+        <div class="list-group-item">
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1 app-truncate">${torrent.name}</h5>
             </div>

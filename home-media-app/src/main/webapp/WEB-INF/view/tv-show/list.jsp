@@ -9,20 +9,25 @@
     </head>
     <body>
         <app:navigation/>
-        <div class="container">
-            <c:forEach var="tvShow" items="${tvShowList}">
-                <c:url var="deleteUrl" value="/tv-show/${tvShow.id}/delete"/>
-                <c:url var="tvShowUrl" value="/tv-show/${tvShow.id}"/>
-                <div class="card mb-3">
-                    <img src="${tvShow.thumbnail}" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title">${tvShow.name}</h5>
-                        <a href="${tvShowUrl}" class="btn btn-primary">Open</a>
-                        <a href="${deleteUrl}" class="btn btn-danger">Delete</a>
-                    </div>
+        <div class="container mt-3">
+            <div class="card-columns">
+                <c:forEach var="tvShow" items="${tvShowList}">
+                    <c:url var="tvShowUrl" value="/tv-show/${tvShow.id}"/>
+                    <a href="${tvShowUrl}" class="app-clickable-card">
+                        <div class="card mb-3 text-white">
+                            <img src="${tvShow.thumbnail}" class="card-img">
+                            <div class="card-img-overlay app-text-above-image-container">
+                                <h5 class="card-title">${tvShow.name}</h5>
+                            </div>
+                        </div>
+                    </a>
+                </c:forEach>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <a href="${addShowUrl}" class="btn btn-primary btn-block">Add</a>
                 </div>
-            </c:forEach>
-            <a href="${addShowUrl}" class="btn btn-primary btn-block">Add</a>
+            </div>
         </div>
     </body>
 </html>

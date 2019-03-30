@@ -11,9 +11,17 @@
     </head>
     <body>
         <app:navigation></app:navigation>
-        <div class="p-3">
-            <a class="btn btn-primary" href="${downloadTorrentFormUrl}" role="button">Download torrent</a>
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col">
+                    <a class="btn btn-primary" href="${downloadTorrentFormUrl}" role="button">Download torrent</a>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <app:torrent-list torrents="${torrentList}" deleteUrlPrefix="${torrentDeleteUrlPrefix}"/>
+                </div>
+            </div>
         </div>
-        <app:torrent-list torrents="${torrentList}" deleteUrlPrefix="${torrentDeleteUrlPrefix}"/>
     </body>
 </html>
