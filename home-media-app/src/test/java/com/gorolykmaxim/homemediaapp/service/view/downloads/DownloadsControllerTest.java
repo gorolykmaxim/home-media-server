@@ -1,6 +1,7 @@
 package com.gorolykmaxim.homemediaapp.service.view.downloads;
 
 import com.gorolykmaxim.homemediaapp.model.torrent.DownloadingTorrentRepository;
+import com.gorolykmaxim.homemediaapp.service.view.ViewError;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,5 +28,11 @@ public class DownloadsControllerTest {
         Assert.assertEquals("downloads", modelAndView.getViewName());
         Map<String, Object> model = modelAndView.getModel();
         Assert.assertEquals(Collections.emptyList(), model.get("downloads"));
+    }
+
+    @Test(expected = ViewError.class)
+    public void failShowDownloads() {
+        Mockito.when(repository.findDownloading()).thenThrow(Mockito.mock(RuntimeException.class));
+        controller.showDownloads();
     }
 }

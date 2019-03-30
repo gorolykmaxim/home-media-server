@@ -194,7 +194,7 @@ public class TvShowControllerTest {
         Mockito.when(tvShowRepository.findById(id)).thenReturn(tvShow);
         String url = controller.deleteEpisodeOfTvShow(id, episode.getName());
         Assert.assertEquals(String.format("redirect:/tv-show/%s", id), url);
-        Mockito.verify(episodeRepository).deleteEpisodeOfShow(tvShow, episode.getName());
+        Mockito.verify(episodeRepository).deleteEpisodeOfTvShow(tvShow, episode.getName());
     }
 
     @Test(expected = ViewError.class)

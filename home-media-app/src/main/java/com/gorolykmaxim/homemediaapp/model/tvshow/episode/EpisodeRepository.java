@@ -18,7 +18,7 @@ public class EpisodeRepository {
         return storage.findEpisodeNamesByTvShow(tvShow).stream().map(factory::create).collect(Collectors.toList());
     }
 
-    public void deleteEpisodeOfShow(TvShow tvShow, String episodeName) {
+    public void deleteEpisodeOfTvShow(TvShow tvShow, String episodeName) {
         storage.deleteEpisodeOfShow(tvShow, episodeName);
     }
 }

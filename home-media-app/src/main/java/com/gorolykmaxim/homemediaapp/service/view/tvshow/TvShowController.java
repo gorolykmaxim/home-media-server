@@ -135,7 +135,7 @@ public class TvShowController {
     public String deleteEpisodeOfTvShow(@PathVariable UUID id, @PathVariable String name) {
         try {
             TvShow tvShow = tvShowRepository.findById(id);
-            episodeRepository.deleteEpisodeOfShow(tvShow, name);
+            episodeRepository.deleteEpisodeOfTvShow(tvShow, name);
             return String.format("redirect:/tv-show/%s", id);
         } catch (RuntimeException | TvShowRepository.TvShowDoesNotExistException e) {
             throw new ViewError(e);
