@@ -19,3 +19,6 @@ services:
     volumes:
       - {mediaFolderPath}:/shows
       - {configFolderPath}:/data
+  plex-listener:
+    volumes:
+      - {mediaLogsFolderPath}:/plex/logs

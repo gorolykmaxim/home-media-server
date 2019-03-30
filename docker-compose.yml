@@ -27,3 +27,11 @@ services:
     ports:
       - 80:80
     restart: always
+  # Plex logs listener, that notifies home-media-app about different events in Plex
+  plex-listener:
+    build:
+      context: plex-listener
+    container_name: plex-listener
+    depends_on:
+      - plex
+    restart: always
