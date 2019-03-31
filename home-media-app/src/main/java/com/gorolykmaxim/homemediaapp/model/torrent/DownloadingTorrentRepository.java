@@ -14,12 +14,14 @@ public class DownloadingTorrentRepository {
     public List<DownloadingTorrent> findAll() {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("sort", "progress");
+        parameters.put("reverse", "true");
         return service.find(parameters);
     }
 
     public List<DownloadingTorrent> findDownloading() {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("sort", "progress");
+        parameters.put("reverse", "true");
         parameters.put("filter", "downloading");
         return service.find(parameters);
     }

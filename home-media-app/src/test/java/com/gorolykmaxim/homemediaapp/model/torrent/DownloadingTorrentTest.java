@@ -25,6 +25,7 @@ public class DownloadingTorrentTest {
         List<DownloadingTorrent> downloadingTorrentList = Collections.singletonList(Mockito.mock(DownloadingTorrent.class));
         Map<String, String> expectedParameters = new HashMap<>();
         expectedParameters.put("sort", "progress");
+        expectedParameters.put("reverse", "true");
         Mockito.when(service.find(expectedParameters)).thenReturn(downloadingTorrentList);
         List<DownloadingTorrent> actualDownloadingTorrentList = repository.findAll();
         Assert.assertEquals(downloadingTorrentList, actualDownloadingTorrentList);
@@ -36,6 +37,7 @@ public class DownloadingTorrentTest {
         Map<String, String> expectedParameters = new HashMap<>();
         expectedParameters.put("sort", "progress");
         expectedParameters.put("filter", "downloading");
+        expectedParameters.put("reverse", "true");
         Mockito.when(service.find(expectedParameters)).thenReturn(downloadingTorrentList);
         List<DownloadingTorrent> actualDownloadingTorrentList = repository.findDownloading();
         Assert.assertEquals(downloadingTorrentList, actualDownloadingTorrentList);
