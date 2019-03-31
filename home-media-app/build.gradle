@@ -7,7 +7,7 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'war'
 
 group = 'com.gorolykmaxim'
-version = '2.0.5'
+version = '2.0.6'
 sourceCompatibility = '1.8'
 
 repositories {

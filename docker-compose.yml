@@ -22,10 +22,10 @@ services:
     restart: always
   # web app to control media server from a mobile phone
   home-media-app:
-    image: gorolykmaxim/home-media-app:2.0.5
+    image: gorolykmaxim/home-media-app:2.0.6
     container_name: home-media-app
     ports:
-      - 80:80
+      - 80:8080
     restart: always
   # Plex logs listener, that notifies home-media-app about different events in Plex
   plex-listener:
