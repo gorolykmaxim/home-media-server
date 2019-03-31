@@ -32,7 +32,7 @@ public class QbittorrentTest {
         rawQbittorrent = new HashMap<>();
         rawQbittorrent.put("hash", UUID.randomUUID().toString());
         rawQbittorrent.put("name", "A torrent");
-        rawQbittorrent.put("size", "1234000");
+        rawQbittorrent.put("size", "5673886738");
         rawQbittorrent.put("progress", "0.42");
         rawQbittorrent.put("state", "downloading");
         rawQbittorrent.put("dlspeed", "2234000");

@@ -41,7 +41,7 @@ public class QbittorrentFactory {
         return new Qbittorrent(
                 qbittorrent.get("hash"),
                 qbittorrent.get("name"),
-                Integer.parseInt(qbittorrent.get("size")),
+                Long.parseLong(qbittorrent.get("size")),
                 Double.parseDouble(qbittorrent.get("progress")),
                 qbittorrent.get("state"),
                 new DownloadSpeed(Long.parseLong(qbittorrent.get("dlspeed")), "second"),
