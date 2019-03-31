@@ -16,6 +16,7 @@ services:
       - {mediaFolderPath}:/media
       - {configFolderPath}:/config
   home-media-app:
+    user: {userId}:{userGroupId}
     volumes:
       - {mediaFolderPath}:/shows
       - {configFolderPath}:/data
