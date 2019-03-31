@@ -4,7 +4,7 @@ import sys
 import requests
 
 matcher = re.compile(r".*\'(.*)\'( -)? got played.*")
-url = 'http://home-media-app/api/v1/episode/view'
+url = 'http://home-media-app:8080/api/v1/episode/view'
 for line in sys.stdin:
     result = matcher.match(line)
     print('Matching: ', line)
