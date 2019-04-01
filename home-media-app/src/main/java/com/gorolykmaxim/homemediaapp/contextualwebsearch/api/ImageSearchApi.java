@@ -13,16 +13,19 @@ public class ImageSearchApi {
 
     private RestTemplate restTemplate;
     private URI baseUri;
+    private int defaultPageSize, defaultPageNumber;
 
-    public ImageSearchApi(RestTemplate restTemplate, URI baseUri) {
+    public ImageSearchApi(RestTemplate restTemplate, URI baseUri, int defaultPageSize, int defaultPageNumber) {
         this.restTemplate = restTemplate;
         this.baseUri = baseUri;
+        this.defaultPageSize = defaultPageSize;
+        this.defaultPageNumber = defaultPageNumber;
     }
 
     public ImageList findImagesBySearchTerm(String searchTerm) {
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("pageSize", "30");
-        parameters.put("pageNumber", "1");
+        parameters.put("pageSize", Integer.toString(defaultPageSize));
+        parameters.put("pageNumber", Integer.toString(defaultPageNumber));
         return findImagesBySearchTerm(searchTerm, parameters);
     }
 

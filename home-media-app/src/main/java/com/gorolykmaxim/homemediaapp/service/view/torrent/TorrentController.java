@@ -30,7 +30,7 @@ public class TorrentController {
         this.downloadingTorrentRepository = downloadingTorrentRepository;
     }
 
-    @Value("${home-media-app.torrent.default-download-folder:/downloads/}")
+    @Value("${home-media-app.torrent.default-download-folder}")
     public void setDefaultDownloadFolder(String defaultDownloadFolder) {
         this.defaultDownloadFolder = defaultDownloadFolder;
     }

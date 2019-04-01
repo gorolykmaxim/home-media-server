@@ -13,7 +13,7 @@ public class DownloadSpeedFormatterTest {
     @Before
     public void setUp() throws Exception {
         sizeFormatter = Mockito.mock(SizeFormatter.class);
-        downloadSpeedFormatter = new DownloadSpeedFormatter(sizeFormatter);
+        downloadSpeedFormatter = new DownloadSpeedFormatter("%s / %s", sizeFormatter);
     }
 
     @Test

@@ -34,6 +34,7 @@ public class TvShowController {
     private TorrentRepository torrentRepository;
     private EpisodeViewRepository episodeViewRepository;
     private ViewableEpisodeFactory viewableEpisodeFactory;
+    private String thumbnailNotFoundMessage;
 
     @Autowired
     public TvShowController(TvShowRepository tvShowRepository, ThumbnailRepository thumbnailRepository,
@@ -50,9 +51,14 @@ public class TvShowController {
         viewableEpisodeFactory = new ViewableEpisodeFactory();
     }
 
-    @Value("${home-media-app.torrent.default-download-folder:/media/}")
+    @Value("${home-media-app.torrent.default-download-folder}")
     public void setTorrentDownloadFolder(String torrentDownloadFolder) {
         torrentPathResolver = new PathResolver(torrentDownloadFolder);
+    }
+
+    @Value("${home-media-app.view.thumbnail-not-found-message}")
+    public void setThumbnailNotFoundMessage(String thumbnailNotFoundMessage) {
+        this.thumbnailNotFoundMessage = thumbnailNotFoundMessage;
     }
 
     @GetMapping
@@ -207,9 +213,7 @@ public class TvShowController {
                 // No thumbnail has been found. Just notify user about it.
                 nextIndex = 1;
                 modelAndView.addObject("thumbnailUrl", tvShow.getThumbnail());
-                modelAndView.addObject("thumbnailNotFoundMessage", "I was not able to find a " +
-                        "thumbnail for the show, so i've assigned a default one. " +
-                        "You may want to change TV Show name, so i'll try again.");
+                modelAndView.addObject("thumbnailNotFoundMessage", thumbnailNotFoundMessage);
             }
             modelAndView.addObject("submitUrl", String.format("/tv-show/%s/thumbnail/save", id));
             modelAndView.addObject("nextThumbnailUrl", String.format("/tv-show/%s/thumbnail/edit/%s", id, nextIndex));

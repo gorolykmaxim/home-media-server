@@ -11,6 +11,7 @@ public class HomeMediaAppControllerTest {
     @Before
     public void setUp() throws Exception {
         controller = new HomeMediaAppController();
+        controller.setHomePage("/tv-show");
     }
 
     @Test

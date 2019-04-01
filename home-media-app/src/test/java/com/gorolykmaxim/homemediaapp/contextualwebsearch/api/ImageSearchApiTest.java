@@ -23,7 +23,7 @@ public class ImageSearchApiTest {
         restTemplate = Mockito.mock(RestTemplate.class);
         baseUri = URI.create("http://search.com");
         searchTerm = "search term";
-        api = new ImageSearchApi(restTemplate, baseUri);
+        api = new ImageSearchApi(restTemplate, baseUri, 30, 1);
     }
 
     @Test

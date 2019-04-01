@@ -30,6 +30,7 @@ public class TvShowControllerTest {
     private EpisodeViewRepository episodeViewRepository;
     private TvShowController controller;
     private String torrentRootDirectory;
+    private String thumbnailNotFoundMessage;
     private UUID id;
     private TvShow tvShow;
     private Episode episode;
@@ -44,6 +45,8 @@ public class TvShowControllerTest {
     public void setUp() throws Exception {
         id = UUID.randomUUID();
         torrentRootDirectory = "/downloads/";
+        thumbnailNotFoundMessage = "I was not able to find a thumbnail for the show, so i've assigned a default one. " +
+                "You may want to change TV Show name, so i'll try again.";
         tvShow = Mockito.mock(TvShow.class);
         Mockito.when(tvShow.getId()).thenReturn(id);
         Mockito.when(tvShow.getName()).thenReturn("Popular TV");
@@ -72,6 +75,7 @@ public class TvShowControllerTest {
         controller = new TvShowController(tvShowRepository, thumbnailRepository, episodeRepository, tvShowFactory,
                 torrentFactory, torrentRepository, episodeViewRepository);
         controller.setTorrentDownloadFolder(torrentRootDirectory);
+        controller.setThumbnailNotFoundMessage(thumbnailNotFoundMessage);
     }
 
     @Test
@@ -343,9 +347,7 @@ public class TvShowControllerTest {
         Map<String, Object> model = modelAndView.getModel();
         assertThumbnailEditUrls(model, 1);
         Assert.assertEquals(tvShow.getThumbnail(), model.get("thumbnailUrl"));
-        Assert.assertEquals("I was not able to find a " +
-                "thumbnail for the show, so i've assigned a default one. " +
-                "You may want to change TV Show name, so i'll try again.", model.get("thumbnailNotFoundMessage"));
+        Assert.assertEquals(thumbnailNotFoundMessage, model.get("thumbnailNotFoundMessage"));
     }
 
     @Test(expected = ViewError.class)
