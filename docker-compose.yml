@@ -52,7 +52,7 @@ services:
     restart: always
   # Plex logs listener, that notifies home-media-app about different events in Plex
   plex-listener:
-    image: gorolykmaxim/plex-listener:1.1.4
+    image: gorolykmaxim/plex-listener:1.1.5
     container_name: plex-listener
     environment:
       - MESSAGE_REGEXP=.*\'(.*)\'( -)? got played.*
