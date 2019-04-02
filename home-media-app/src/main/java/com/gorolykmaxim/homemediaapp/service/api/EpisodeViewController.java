@@ -3,11 +3,12 @@ package com.gorolykmaxim.homemediaapp.service.api;
 import com.gorolykmaxim.homemediaapp.model.view.EpisodeView;
 import com.gorolykmaxim.homemediaapp.model.view.EpisodeViewFactory;
 import com.gorolykmaxim.homemediaapp.model.view.EpisodeViewRepository;
+import com.gorolykmaxim.homemediaapp.service.model.EpisodeViewPrototype;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController("apiEpisodeViewController")
 @RequestMapping("/api/v1/episode/view")
 public class EpisodeViewController {
 

@@ -3,6 +3,7 @@ package com.gorolykmaxim.homemediaapp.service.api;
 import com.gorolykmaxim.homemediaapp.model.view.EpisodeView;
 import com.gorolykmaxim.homemediaapp.model.view.EpisodeViewFactory;
 import com.gorolykmaxim.homemediaapp.model.view.EpisodeViewRepository;
+import com.gorolykmaxim.homemediaapp.service.model.EpisodeViewPrototype;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;

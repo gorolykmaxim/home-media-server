@@ -1,11 +1,7 @@
-package com.gorolykmaxim.homemediaapp.service.view.torrent;
+package com.gorolykmaxim.homemediaapp.service.view;
 
-import com.gorolykmaxim.homemediaapp.model.torrent.Torrent;
-import com.gorolykmaxim.homemediaapp.model.torrent.TorrentFactory;
-import com.gorolykmaxim.homemediaapp.model.torrent.TorrentRepository;
-import com.gorolykmaxim.homemediaapp.model.torrent.DownloadingTorrent;
-import com.gorolykmaxim.homemediaapp.model.torrent.DownloadingTorrentRepository;
-import com.gorolykmaxim.homemediaapp.service.view.ViewError;
+import com.gorolykmaxim.homemediaapp.model.torrent.*;
+import com.gorolykmaxim.homemediaapp.service.model.TorrentPrototype;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 public class ImageSearchTest {
@@ -68,5 +69,14 @@ public class ImageSearchTest {
         Optional<Thumbnail> possibleThumbnail = search.findThumbnailBySearchTermAndIndex(searchTerm, index);
         Assert.assertFalse(possibleThumbnail.isPresent());
         Mockito.verify(api, Mockito.never()).findImagesBySearchTerm(searchTerm);
+    }
+
+    @Test
+    public void findAllThumbnails() {
+        ImageList imageList = new ImageList();
+        imageList.setImages(Collections.singletonList(Mockito.mock(Image.class)));
+        Mockito.when(api.findImagesBySearchTerm(searchTerm)).thenReturn(imageList);
+        List<Thumbnail> thumbnailList = search.findThumbnailsBySearchTerm(searchTerm);
+        Assert.assertEquals(imageList.getImages(), thumbnailList);
     }
 }

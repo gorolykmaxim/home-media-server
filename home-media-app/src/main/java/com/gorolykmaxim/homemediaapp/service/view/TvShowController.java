@@ -1,4 +1,4 @@
-package com.gorolykmaxim.homemediaapp.service.view.tvshow;
+package com.gorolykmaxim.homemediaapp.service.view;
 
 import com.gorolykmaxim.homemediaapp.common.PathResolver;
 import com.gorolykmaxim.homemediaapp.model.torrent.Torrent;
@@ -9,10 +9,7 @@ import com.gorolykmaxim.homemediaapp.model.tvshow.episode.Episode;
 import com.gorolykmaxim.homemediaapp.model.tvshow.episode.EpisodeRepository;
 import com.gorolykmaxim.homemediaapp.model.view.EpisodeView;
 import com.gorolykmaxim.homemediaapp.model.view.EpisodeViewRepository;
-import com.gorolykmaxim.homemediaapp.service.view.ViewError;
-import com.gorolykmaxim.homemediaapp.service.view.tvshow.episode.EpisodePrototype;
-import com.gorolykmaxim.homemediaapp.service.view.tvshow.episode.ViewableEpisode;
-import com.gorolykmaxim.homemediaapp.service.view.tvshow.episode.ViewableEpisodeFactory;
+import com.gorolykmaxim.homemediaapp.service.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

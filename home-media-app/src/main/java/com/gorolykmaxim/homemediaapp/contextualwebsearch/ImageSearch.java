@@ -7,6 +7,8 @@ import com.gorolykmaxim.homemediaapp.contextualwebsearch.cache.ImageCache;
 import com.gorolykmaxim.homemediaapp.model.tvshow.Thumbnail;
 import com.gorolykmaxim.homemediaapp.model.tvshow.ThumbnailRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class ImageSearch implements ThumbnailRepository {
@@ -37,5 +39,10 @@ public class ImageSearch implements ThumbnailRepository {
         } else {
             return Optional.of(possibleCachedImage.get());
         }
+    }
+
+    @Override
+    public List<Thumbnail> findThumbnailsBySearchTerm(String searchTerm) {
+        return new ArrayList<>(searchApi.findImagesBySearchTerm(searchTerm).getImages());
     }
 }

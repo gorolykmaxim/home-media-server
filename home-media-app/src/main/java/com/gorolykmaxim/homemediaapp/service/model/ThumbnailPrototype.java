@@ -1,4 +1,4 @@
-package com.gorolykmaxim.homemediaapp.service.view.tvshow;
+package com.gorolykmaxim.homemediaapp.service.model;
 
 import java.net.URI;
 import java.util.Objects;

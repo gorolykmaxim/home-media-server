@@ -1,4 +1,4 @@
-package com.gorolykmaxim.homemediaapp.service.api;
+package com.gorolykmaxim.homemediaapp.service.model;
 
 import java.util.Objects;
 

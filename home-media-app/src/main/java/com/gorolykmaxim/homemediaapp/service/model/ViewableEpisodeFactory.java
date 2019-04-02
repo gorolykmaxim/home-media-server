@@ -1,4 +1,4 @@
-package com.gorolykmaxim.homemediaapp.service.view.tvshow.episode;
+package com.gorolykmaxim.homemediaapp.service.model;
 
 public class ViewableEpisodeFactory {
     public ViewableEpisode create(String name, boolean viewed) {

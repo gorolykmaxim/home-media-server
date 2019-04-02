@@ -1,4 +1,4 @@
-package com.gorolykmaxim.homemediaapp.service.view.tvshow;
+package com.gorolykmaxim.homemediaapp.service.view;
 
 import com.gorolykmaxim.homemediaapp.model.torrent.Torrent;
 import com.gorolykmaxim.homemediaapp.model.torrent.TorrentFactory;
@@ -8,9 +8,10 @@ import com.gorolykmaxim.homemediaapp.model.tvshow.episode.Episode;
 import com.gorolykmaxim.homemediaapp.model.tvshow.episode.EpisodeRepository;
 import com.gorolykmaxim.homemediaapp.model.view.EpisodeView;
 import com.gorolykmaxim.homemediaapp.model.view.EpisodeViewRepository;
-import com.gorolykmaxim.homemediaapp.service.view.ViewError;
-import com.gorolykmaxim.homemediaapp.service.view.tvshow.episode.EpisodePrototype;
-import com.gorolykmaxim.homemediaapp.service.view.tvshow.episode.ViewableEpisode;
+import com.gorolykmaxim.homemediaapp.service.model.EpisodePrototype;
+import com.gorolykmaxim.homemediaapp.service.model.ThumbnailPrototype;
+import com.gorolykmaxim.homemediaapp.service.model.TvShowPrototype;
+import com.gorolykmaxim.homemediaapp.service.model.ViewableEpisode;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.gorolykmaxim.homemediaapp.service.view.tvshow.episode;
+package com.gorolykmaxim.homemediaapp.service.model;
 
 import java.util.Objects;
 

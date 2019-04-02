@@ -1,10 +1,10 @@
-package com.gorolykmaxim.homemediaapp.service.view.torrent;
+package com.gorolykmaxim.homemediaapp.service.view;
 
 import com.gorolykmaxim.homemediaapp.model.torrent.DownloadingTorrentRepository;
 import com.gorolykmaxim.homemediaapp.model.torrent.Torrent;
 import com.gorolykmaxim.homemediaapp.model.torrent.TorrentFactory;
 import com.gorolykmaxim.homemediaapp.model.torrent.TorrentRepository;
-import com.gorolykmaxim.homemediaapp.service.view.ViewError;
+import com.gorolykmaxim.homemediaapp.service.model.TorrentPrototype;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
