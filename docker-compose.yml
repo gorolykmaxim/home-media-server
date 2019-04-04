@@ -22,7 +22,7 @@ services:
     restart: always
   # web app to control media server from a mobile phone
   home-media-app:
-    image: gorolykmaxim/home-media-app:2.2.1
+    image: gorolykmaxim/home-media-app:2.2.2
     container_name: home-media-app
     environment:
       - SPRING_MVC_VIEW_PREFIX=/WEB-INF/view/

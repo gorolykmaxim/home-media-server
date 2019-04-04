@@ -4,9 +4,14 @@ import com.gorolykmaxim.homemediaapp.model.view.EpisodeView;
 import com.gorolykmaxim.homemediaapp.model.view.EpisodeViewFactory;
 import com.gorolykmaxim.homemediaapp.model.view.EpisodeViewRepository;
 import com.gorolykmaxim.homemediaapp.service.model.EpisodeViewPrototype;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class EpisodeViewControllerTest {
     private EpisodeViewFactory factory;
@@ -21,6 +26,14 @@ public class EpisodeViewControllerTest {
         controller = new EpisodeViewController(factory, repository);
         prototype = new EpisodeViewPrototype();
         prototype.setEpisodeName("Some episode name");
+    }
+
+    @Test
+    public void findViewsForEpisodes() {
+        List<String> episodeNames = Arrays.asList("episode 1", "episode 2");
+        List<EpisodeView> episodeViews = Collections.singletonList(factory.create("episode 1"));
+        Mockito.when(repository.findAllByEpisodeNameIn(episodeNames)).thenReturn(episodeViews);
+        Assert.assertEquals(episodeViews, controller.findViewsForEpisodes(episodeNames));
     }
 
     @Test

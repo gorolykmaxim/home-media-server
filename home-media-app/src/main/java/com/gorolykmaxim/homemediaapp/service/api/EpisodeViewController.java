@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController("apiEpisodeViewController")
 @RequestMapping("/api/v1/episode/view")
 public class EpisodeViewController {
@@ -19,6 +21,11 @@ public class EpisodeViewController {
     public EpisodeViewController(EpisodeViewFactory factory, EpisodeViewRepository repository) {
         this.factory = factory;
         this.repository = repository;
+    }
+
+    @GetMapping
+    public List<EpisodeView> findViewsForEpisodes(@RequestParam List<String> episodeName) {
+        return repository.findAllByEpisodeNameIn(episodeName);
     }
 
     @PostMapping
