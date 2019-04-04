@@ -63,10 +63,11 @@ public class TvShowController {
     }
 
     @PostMapping
-    public void create(@RequestBody TvShowPrototype prototype) {
+    public TvShow create(@RequestBody TvShowPrototype prototype) {
         try {
             TvShow tvShow = tvShowFactory.create(prototype.getName());
             tvShowRepository.save(tvShow);
+            return tvShow;
         } catch (IllegalArgumentException e) {
             throw new TvShowCreationError(prototype, e);
         }

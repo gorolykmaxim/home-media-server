@@ -86,7 +86,8 @@ public class TvShowControllerTest {
     public void create() {
         Mockito.when(tvShowFactory.create(tvShowPrototype.getName()))
                 .thenReturn(tvShow);
-        controller.create(tvShowPrototype);
+        TvShow actualTvShow = controller.create(tvShowPrototype);
+        Assert.assertEquals(tvShow, actualTvShow);
         Mockito.verify(tvShowRepository).save(tvShow);
     }
 
