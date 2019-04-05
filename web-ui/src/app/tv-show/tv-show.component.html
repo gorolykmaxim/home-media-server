@@ -1,0 +1,35 @@
+<div [ngStyle]="{'background-image': 'url(' + tvShow.thumbnail + ')'}" class="app-full-screen-container app-body-padding" fxLayout="row" fxLayoutAlign="center">
+  <div fxFlex="40%" fxFlex.xs="100%">
+    <mat-card class="app-margin-bottom">
+      <mat-card-title class="app-text-truncate">{{tvShow.name}}</mat-card-title>
+      <mat-card-subtitle *ngIf="lastViewedEpisode != null">Last seen episode:</mat-card-subtitle>
+      <mat-card-content *ngIf="lastViewedEpisode != null" class="app-text-truncate">{{lastViewedEpisode.name}}</mat-card-content>
+    </mat-card>
+    <mat-card>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <div fxLayout="row" fxLayoutAlign="space-between">
+          <button mat-button (click)="editShow()">Edit</button>
+          <button mat-button routerLink="/tv-show/{{tvShow.id}}/thumbnail">Change thumbnail</button>
+        </div>
+        <button mat-button color="warn" (click)="deleteShow()">Delete</button>
+      </div>
+      <mat-list *ngIf="episodes.length > 0">
+        <span mat-subheader>Episodes</span>
+        <mat-list-item *ngFor="let episode of episodes">
+          <mat-chip-list>
+            <mat-chip color="primary" [selected]="!episode.viewed">{{episode.viewed ? 'viewed' : 'new'}}</mat-chip>
+          </mat-chip-list>
+          <p mat-line>{{episode.name}}</p>
+          <button mat-icon-button (click)="deleteEpisode(episode)">
+            <mat-icon color="warn">delete</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
+    </mat-card>
+  </div>
+</div>
+<div class="app-action">
+  <button mat-fab color="primary" (click)="addEpisode()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

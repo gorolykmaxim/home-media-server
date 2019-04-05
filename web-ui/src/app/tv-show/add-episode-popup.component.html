@@ -1,0 +1,13 @@
+<mat-nav-list>
+  <form (ngSubmit)="add()" #episodeDownloadForm="ngForm">
+    <div mat-list-item fxLayout="row">
+      <mat-form-field fxFill>
+        <input matInput required minlength="1" placeholder="Magnet Link" [(ngModel)]="episode.magnetUri"
+               name="magnetUri" #magnetUri="ngModel">
+      </mat-form-field>
+    </div>
+    <div mat-list-item>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!episodeDownloadForm.form.valid">Add</button>
+    </div>
+  </form>
+</mat-nav-list>

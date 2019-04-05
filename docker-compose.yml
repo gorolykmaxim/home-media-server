@@ -48,7 +48,7 @@ services:
       - HOME_MEDIA_APP_VIEW_THUMBNAIL_NOT_FOUND_MESSAGE=I was not able to find a thumbnail for the show, so i've assigned a default one. You may want to change TV Show name, so i'll try again.
       - HOME_MEDIA_APP_VIEW_HOME_PAGE=/tv-show
     ports:
-      - 80:8080
+      - 8090:8080
     restart: always
   # Plex logs listener, that notifies home-media-app about different events in Plex
   plex-listener:
@@ -60,4 +60,11 @@ services:
       - ATTRIBUTE_NAME=episodeName
     depends_on:
       - plex
+    restart: always
+  # Single page web-ui
+  web-ui:
+    image: gorolykmaxim/web-ui:1.0.0
+    container_name: web-ui
+    ports:
+      - 80:80
     restart: always

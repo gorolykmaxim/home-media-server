@@ -1,0 +1,32 @@
+{
+  "name": "Home Media App",
+  "short_name": "Media App",
+  "start_url": "./",
+  "theme_color": "#3f51b5",
+  "background_color": "#3f51b5",
+  "display": "standalone",
+  "description": "Web application to manage a home media server",
+  "icons": [
+    {
+      "src": "/assets/Icon-16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/Icon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/Icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/Icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+
+}

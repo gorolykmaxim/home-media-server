@@ -1,0 +1,12 @@
+<mat-nav-list>
+  <form (ngSubmit)="save()" #addTvShowForm="ngForm">
+    <div mat-list-item fxLayout="row">
+      <mat-form-field fxFill>
+        <input matInput required minlength="1" placeholder="TV Show name" [(ngModel)]="data.tvShow.name" name="name" #name="ngModel">
+      </mat-form-field>
+    </div>
+    <div mat-list-item fxLayout="row">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!addTvShowForm.form.valid">Save</button>
+    </div>
+  </form>
+</mat-nav-list>

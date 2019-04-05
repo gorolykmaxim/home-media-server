@@ -1,0 +1,8 @@
+<app-torrent-list [torrents]="torrentsObservable | async"
+                  [allowRemoval]="true"
+                  (delete)="removeTorrent($event)"></app-torrent-list>
+<div class="app-action">
+  <button mat-fab color="primary" (click)="addTorrent()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
