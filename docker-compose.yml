@@ -21,50 +21,50 @@ services:
     network_mode: host
     restart: always
   # web app to control media server from a mobile phone
-  home-media-app:
-    image: gorolykmaxim/home-media-app:2.2.2
-    container_name: home-media-app
-    environment:
-      - SPRING_MVC_VIEW_PREFIX=/WEB-INF/view/
-      - SPRING_MVC_VIEW_SUFFIX=.jsp
-      - SPRING_DATASOURCE_URL=jdbc:h2:file:/data/home-media-app
-      - SPRING_DATASOURCE_USERNAME=homemediaapp
-      - SPRING_DATASOURCE_PASSWORD=homemediaapp
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - HOME_MEDIA_APP_QBITTORRENT_BASE_URI=http://qbittorrent:8080
-      - HOME_MEDIA_APP_QBITTORRENT_USERNAME=admin
-      - HOME_MEDIA_APP_QBITTORRENT_PASSWORD=adminadmin
-      - HOME_MEDIA_APP_CONTEXTUALWEBSEARCH_BASE_URI=https://www.contextualwebsearch.com
-      - HOME_MEDIA_APP_CONTEXTUALWEBSEARCH_PAGE_NUMBER=1
-      - HOME_MEDIA_APP_CONTEXTUALWEBSEARCH_PAGE_SIZE=30
-      - HOME_MEDIA_APP_CONTEXTUALWEBSEARCH_CACHE_CLEANUP_STRATEGY=OlderThanToday
-      - HOME_MEDIA_APP_TV_SHOW_DIRECTORY=/shows/
-      - HOME_MEDIA_APP_TV_SHOW_DEFAULT_THUMBNAIL=https://www.marketing.neustar/blog/default-7d66f7da851b6b7d94f785c7d6e6a4b0.png
-      - HOME_MEDIA_APP_COMMON_DURATION_FORMAT=H:mm:ss
-      - HOME_MEDIA_APP_COMMON_DOWNLOAD_SPEED_FORMAT=%s / %s
-      - HOME_MEDIA_APP_TORRENT_SORT=progress
-      - HOME_MEDIA_APP_TORRENT_REVERSE=true
-      - HOME_MEDIA_APP_TORRENT_DEFAULT_DOWNLOAD_FOLDER=/media/
-      - HOME_MEDIA_APP_VIEW_THUMBNAIL_NOT_FOUND_MESSAGE=I was not able to find a thumbnail for the show, so i've assigned a default one. You may want to change TV Show name, so i'll try again.
-      - HOME_MEDIA_APP_VIEW_HOME_PAGE=/tv-show
-    ports:
-      - 8090:8080
-    restart: always
-  # Plex logs listener, that notifies home-media-app about different events in Plex
-  plex-listener:
-    image: gorolykmaxim/plex-listener:1.1.5
-    container_name: plex-listener
-    environment:
-      - MESSAGE_REGEXP=.*\'(.*)\'( -)? got played.*
-      - HOME_MEDIA_APP_URL=http://home-media-app:8080/api/v1/episode/view
-      - ATTRIBUTE_NAME=episodeName
-    depends_on:
-      - plex
-    restart: always
-  # Single page web-ui
-  web-ui:
-    image: gorolykmaxim/web-ui:1.0.1
-    container_name: web-ui
-    ports:
-      - 80:80
-    restart: always
+#  home-media-app:
+#    image: gorolykmaxim/home-media-app:2.2.2
+#    container_name: home-media-app
+#    environment:
+#      - SPRING_MVC_VIEW_PREFIX=/WEB-INF/view/
+#      - SPRING_MVC_VIEW_SUFFIX=.jsp
+#      - SPRING_DATASOURCE_URL=jdbc:h2:file:/data/home-media-app
+#      - SPRING_DATASOURCE_USERNAME=homemediaapp
+#      - SPRING_DATASOURCE_PASSWORD=homemediaapp
+#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+#      - HOME_MEDIA_APP_QBITTORRENT_BASE_URI=http://qbittorrent:8080
+#      - HOME_MEDIA_APP_QBITTORRENT_USERNAME=admin
+#      - HOME_MEDIA_APP_QBITTORRENT_PASSWORD=adminadmin
+#      - HOME_MEDIA_APP_CONTEXTUALWEBSEARCH_BASE_URI=https://www.contextualwebsearch.com
+#      - HOME_MEDIA_APP_CONTEXTUALWEBSEARCH_PAGE_NUMBER=1
+#      - HOME_MEDIA_APP_CONTEXTUALWEBSEARCH_PAGE_SIZE=30
+#      - HOME_MEDIA_APP_CONTEXTUALWEBSEARCH_CACHE_CLEANUP_STRATEGY=OlderThanToday
+#      - HOME_MEDIA_APP_TV_SHOW_DIRECTORY=/shows/
+#      - HOME_MEDIA_APP_TV_SHOW_DEFAULT_THUMBNAIL=https://www.marketing.neustar/blog/default-7d66f7da851b6b7d94f785c7d6e6a4b0.png
+#      - HOME_MEDIA_APP_COMMON_DURATION_FORMAT=H:mm:ss
+#      - HOME_MEDIA_APP_COMMON_DOWNLOAD_SPEED_FORMAT=%s / %s
+#      - HOME_MEDIA_APP_TORRENT_SORT=progress
+#      - HOME_MEDIA_APP_TORRENT_REVERSE=true
+#      - HOME_MEDIA_APP_TORRENT_DEFAULT_DOWNLOAD_FOLDER=/media/
+#      - HOME_MEDIA_APP_VIEW_THUMBNAIL_NOT_FOUND_MESSAGE=I was not able to find a thumbnail for the show, so i've assigned a default one. You may want to change TV Show name, so i'll try again.
+#      - HOME_MEDIA_APP_VIEW_HOME_PAGE=/tv-show
+#    ports:
+#      - 8090:8080
+#    restart: always
+#  # Plex logs listener, that notifies home-media-app about different events in Plex
+#  plex-listener:
+#    image: gorolykmaxim/plex-listener:1.1.5
+#    container_name: plex-listener
+#    environment:
+#      - MESSAGE_REGEXP=.*\'(.*)\'( -)? got played.*
+#      - HOME_MEDIA_APP_URL=http://home-media-app:8080/api/v1/episode/view
+#      - ATTRIBUTE_NAME=episodeName
+#    depends_on:
+#      - plex
+#    restart: always
+#  # Single page web-ui
+#  web-ui:
+#    image: gorolykmaxim/web-ui:1.0.1
+#    container_name: web-ui
+#    ports:
+#      - 80:80
+#    restart: always

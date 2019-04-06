@@ -15,11 +15,11 @@ services:
     volumes:
       - {mediaFolderPath}:/media
       - {configFolderPath}:/config
-  home-media-app:
-    user: {userId}:{userGroupId}
-    volumes:
-      - {mediaFolderPath}:/shows
-      - {configFolderPath}:/data
-  plex-listener:
-    volumes:
-      - {mediaLogsFolderPath}:/plex/logs
+#  home-media-app:
+#    user: {userId}:{userGroupId}
+#    volumes:
+#      - {mediaFolderPath}:/shows
+#      - {configFolderPath}:/data
+#  plex-listener:
+#    volumes:
+#      - {mediaLogsFolderPath}:/plex/logs
