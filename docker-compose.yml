@@ -63,7 +63,7 @@ services:
     restart: always
   # Single page web-ui
   web-ui:
-    image: gorolykmaxim/web-ui:1.0.0
+    image: gorolykmaxim/web-ui:1.0.1
     container_name: web-ui
     ports:
       - 80:80
