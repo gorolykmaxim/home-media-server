@@ -15,10 +15,6 @@ services:
     volumes:
       - {mediaFolderPath}:/media
       - {configFolderPath}:/config
-  # simple web file browser
-  filebrowser:
-    volumes:
-      - {mediaFolderPath}:/srv
 #  home-media-app:
 #    user: {userId}:{userGroupId}
 #    volumes:

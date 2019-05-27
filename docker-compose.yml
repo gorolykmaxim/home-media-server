@@ -20,13 +20,6 @@ services:
     # Plex doesn't really run well behind NAT, so it is advised to use "host" network_mode
     network_mode: host
     restart: always
-  # simple web file browser
-  filebrowser:
-    image: filebrowser/filebrowser
-    container_name: filebrowser
-    ports:
-      - 8090:80
-    restart: always
   # web app to control media server from a mobile phone
 #  home-media-app:
 #    image: gorolykmaxim/home-media-app:2.2.2
