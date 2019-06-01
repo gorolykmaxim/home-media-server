@@ -32,20 +32,30 @@ public class TorrentControllerTest {
 
     @Test
     public void showTorrentList() {
-        List<DownloadingTorrent> torrentList = Collections.emptyList();
-        Mockito.when(downloadingTorrentRepository.findAll()).thenReturn(torrentList);
+        long refreshInterval = 5000;
+        controller.setRefreshInterval(refreshInterval);
         ModelAndView modelAndView = controller.showTorrentList();
         Assert.assertEquals("list", modelAndView.getViewName());
         Map<String, Object> model = modelAndView.getModel();
-        Assert.assertEquals(torrentList, model.get("torrentList"));
+        Assert.assertEquals(refreshInterval, model.get("refreshInterval"));
         Assert.assertEquals("/download", model.get("downloadTorrentFormUrl"));
-        Assert.assertEquals("/delete", model.get("torrentDeleteUrlPrefix"));
+    }
+
+    @Test
+    public void renderTorrentList() {
+        List<DownloadingTorrent> torrentList = Collections.emptyList();
+        Mockito.when(downloadingTorrentRepository.findAll()).thenReturn(torrentList);
+        ModelAndView modelAndView = controller.renderTorrentList();
+        Assert.assertEquals("torrent-list", modelAndView.getViewName());
+        Map<String, Object> model = modelAndView.getModel();
+        Assert.assertEquals(torrentList, model.get("torrents"));
+        Assert.assertEquals("/delete", model.get("deleteUrlPrefix"));
     }
 
     @Test(expected = ViewError.class)
-    public void failToShowTorrentList() {
+    public void failToRenderTorrentList() {
         Mockito.when(downloadingTorrentRepository.findAll()).thenThrow(Mockito.mock(RuntimeException.class));
-        controller.showTorrentList();
+        controller.renderTorrentList();
     }
 
     @Test

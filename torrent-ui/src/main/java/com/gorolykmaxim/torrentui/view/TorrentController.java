@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class TorrentController {
 
     private String defaultDownloadFolder;
+    private long refreshInterval;
     private TorrentFactory factory;
     private TorrentRepository torrentRepository;
     private DownloadingTorrentRepository downloadingTorrentRepository;
@@ -34,13 +35,25 @@ public class TorrentController {
         this.defaultDownloadFolder = defaultDownloadFolder;
     }
 
+    @Value("${torrent-ui.torrent.refresh-interval}")
+    public void setRefreshInterval(long refreshInterval) {
+        this.refreshInterval = refreshInterval;
+    }
+
     @GetMapping
     public ModelAndView showTorrentList() {
+        ModelAndView modelAndView = new ModelAndView("list");
+        modelAndView.addObject("refreshInterval", refreshInterval);
+        modelAndView.addObject("downloadTorrentFormUrl", "/download");
+        return modelAndView;
+    }
+
+    @GetMapping("list")
+    public ModelAndView renderTorrentList() {
         try {
-            ModelAndView modelAndView = new ModelAndView("list");
-            modelAndView.addObject("downloadTorrentFormUrl", "/download");
-            modelAndView.addObject("torrentList", downloadingTorrentRepository.findAll());
-            modelAndView.addObject("torrentDeleteUrlPrefix", "/delete");
+            ModelAndView modelAndView = new ModelAndView("torrent-list");
+            modelAndView.addObject("torrents", downloadingTorrentRepository.findAll());
+            modelAndView.addObject("deleteUrlPrefix", "/delete");
             return modelAndView;
         } catch (RuntimeException e) {
             throw new ViewError(e);

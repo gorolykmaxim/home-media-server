@@ -40,6 +40,7 @@ services:
       - TORRENT_UI_TORRENT_SORT=progress
       - TORRENT_UI_TORRENT_REVERSE=true
       - TORRENT_UI_TORRENT_DEFAULT_DOWNLOAD_FOLDER=/media/
+      - TORRENT_UI_TORRENT_REFRESH_INTERVAL=1000
     ports:
       - 8081:8080
     restart: always
