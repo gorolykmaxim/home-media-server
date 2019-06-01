@@ -28,9 +28,9 @@ services:
       - SERVER_PORT=8080
       - SPRING_MVC_VIEW_PREFIX=/WEB-INF/view/
       - SPRING_MVC_VIEW_SUFFIX=.jsp
-      - SPRING_DATASOURCE_URL=jdbc:h2:file:/data/home-media-app
-      - SPRING_DATASOURCE_USERNAME=homemediaapp
-      - SPRING_DATASOURCE_PASSWORD=homemediaapp
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/data/torrent-ui
+      - SPRING_DATASOURCE_USERNAME=torrentui
+      - SPRING_DATASOURCE_PASSWORD=torrentui
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - TORRENT_UI_QBITTORRENT_BASE_URI=http://qbittorrent:8080
       - TORRENT_UI_QBITTORRENT_USERNAME=admin
