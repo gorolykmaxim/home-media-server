@@ -72,7 +72,14 @@ public class TorrentTest {
     @Test
     public void deleteTorrentById() {
         String id = UUID.randomUUID().toString();
-        repository.deleteById(id);
-        Mockito.verify(service).deleteTorrentById(id);
+        repository.deleteById(id, false);
+        Mockito.verify(service).deleteTorrentById(id, false);
+    }
+
+    @Test
+    public void deleteTorrentWithContentsById() {
+        String id = UUID.randomUUID().toString();
+        repository.deleteById(id, true);
+        Mockito.verify(service).deleteTorrentById(id, true);
     }
 }

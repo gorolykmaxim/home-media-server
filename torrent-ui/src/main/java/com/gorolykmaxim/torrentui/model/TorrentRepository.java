@@ -12,8 +12,8 @@ public class TorrentRepository {
         torrent.downloadVia(service);
     }
 
-    public void deleteById(String id) {
-        service.deleteTorrentById(id);
+    public void deleteById(String id, boolean deleteData) {
+        service.deleteTorrentById(id, deleteData);
     }
 
 }

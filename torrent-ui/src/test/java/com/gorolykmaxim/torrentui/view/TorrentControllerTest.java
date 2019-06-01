@@ -66,7 +66,7 @@ public class TorrentControllerTest {
         Assert.assertEquals("delete", modelAndView.getViewName());
         Map<String, Object> model = modelAndView.getModel();
         Assert.assertEquals(torrent, model.get("torrent"));
-        Assert.assertEquals(String.format("/delete/%s/confirm", id), model.get("deleteUrl"));
+        Assert.assertEquals(String.format("/delete", id), model.get("deleteUrl"));
         Assert.assertEquals("/", model.get("cancelUrl"));
     }
 
@@ -79,17 +79,29 @@ public class TorrentControllerTest {
 
     @Test
     public void deleteTorrentById() {
-        String id = UUID.randomUUID().toString();
-        String viewName = controller.deleteTorrentById(id);
+        DeleteTorrent deleteTorrent = new DeleteTorrent();
+        deleteTorrent.setId(UUID.randomUUID().toString());
+        String viewName = controller.deleteTorrentById(deleteTorrent);
         Assert.assertEquals("redirect:/", viewName);
-        Mockito.verify(torrentRepository).deleteById(id);
+        Mockito.verify(torrentRepository).deleteById(deleteTorrent.getId(), deleteTorrent.isDeleteData());
+    }
+
+    @Test
+    public void deleteTorrentWithContentsById() {
+        DeleteTorrent deleteTorrent = new DeleteTorrent();
+        deleteTorrent.setId(UUID.randomUUID().toString());
+        deleteTorrent.setDeleteData(true);
+        String viewName = controller.deleteTorrentById(deleteTorrent);
+        Assert.assertEquals("redirect:/", viewName);
+        Mockito.verify(torrentRepository).deleteById(deleteTorrent.getId(), deleteTorrent.isDeleteData());
     }
 
     @Test(expected = ViewError.class)
     public void failToDeleteTorrentById() {
-        String id = UUID.randomUUID().toString();
-        Mockito.doThrow(Mockito.mock(RuntimeException.class)).when(torrentRepository).deleteById(id);
-        controller.deleteTorrentById(id);
+        DeleteTorrent deleteTorrent = new DeleteTorrent();
+        deleteTorrent.setId(UUID.randomUUID().toString());
+        Mockito.doThrow(Mockito.mock(RuntimeException.class)).when(torrentRepository).deleteById(deleteTorrent.getId(), deleteTorrent.isDeleteData());
+        controller.deleteTorrentById(deleteTorrent);
     }
 
     @Test

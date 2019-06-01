@@ -16,10 +16,15 @@
                     <h5 class="card-header">Delete torrent</h5>
                     <div class="card-body">
                         <p class="card-text">Are you sure, you want to delete ${torrent.name}</p>
-                        <div>
-                            <a class="btn btn-danger" href="${deleteUrl}">Delete</a>
+                        <form method="post" action="${deleteUrl}">
+                            <input type="hidden" name="id" value="${torrent.id}">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="deleteData" name="deleteData">
+                                <label class="form-check-label" for="deleteData">Delete downloaded files</label>
+                            </div>
+                            <button type="submit" class="btn btn-danger mt-2">Delete</button>
                             <a class="btn btn-light" href="${cancelUrl}">Cancel</a>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

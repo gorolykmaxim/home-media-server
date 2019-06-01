@@ -78,7 +78,7 @@ public class QbittorrentService implements TorrentService {
     }
 
     @Override
-    public void deleteTorrentById(String id) throws DeleteTorrentError {
+    public void deleteTorrentById(String id, boolean deleteData) throws DeleteTorrentError {
         try {
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -86,11 +86,12 @@ public class QbittorrentService implements TorrentService {
             MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
             body.add("hashes", id);
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, httpHeaders);
-            restTemplate.postForLocation(baseUri.resolve("/command/delete"), request);
+            URI uri = deleteData ? baseUri.resolve("/command/deletePerm") : baseUri.resolve("/command/delete");
+            restTemplate.postForLocation(uri, request);
         } catch (HttpClientErrorException.Forbidden e) {
             // Possibly existing authorization has expired. Try to renew.
             authorization.renew();
-            deleteTorrentById(id);
+            deleteTorrentById(id, deleteData);
         } catch (RuntimeException e) {
             throw new DeleteTorrentError(baseUri, id, e);
         }

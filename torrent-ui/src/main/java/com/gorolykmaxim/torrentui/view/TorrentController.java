@@ -60,7 +60,7 @@ public class TorrentController {
         try {
             ModelAndView modelAndView = new ModelAndView("delete");
             modelAndView.addObject("torrent", downloadingTorrentRepository.findById(id));
-            modelAndView.addObject("deleteUrl", String.format("/delete/%s/confirm", id));
+            modelAndView.addObject("deleteUrl", "/delete");
             modelAndView.addObject("cancelUrl", "/");
             return modelAndView;
         } catch (RuntimeException e) {
@@ -68,10 +68,10 @@ public class TorrentController {
         }
     }
 
-    @GetMapping("delete/{id}/confirm")
-    public String deleteTorrentById(@PathVariable("id") String id) {
+    @PostMapping("delete")
+    public String deleteTorrentById(DeleteTorrent deleteTorrent) {
         try {
-            torrentRepository.deleteById(id);
+            torrentRepository.deleteById(deleteTorrent.getId(), deleteTorrent.isDeleteData());
             return "redirect:/";
         } catch (RuntimeException e) {
             throw new ViewError(e);

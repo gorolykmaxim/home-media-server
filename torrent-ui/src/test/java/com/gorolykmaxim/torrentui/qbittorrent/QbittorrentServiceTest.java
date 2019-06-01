@@ -78,7 +78,7 @@ public class QbittorrentServiceTest {
     @Test
     public void deleteTorrentById() {
         HttpEntity<MultiValueMap<String, String>> expectedRequest = createDeleteRequest();
-        service.deleteTorrentById(id);
+        service.deleteTorrentById(id, false);
         Mockito.verify(authorization).applyTo(expectedRequest.getHeaders());
         Mockito.verify(restTemplate).postForLocation(baseUri.resolve("/command/delete"), expectedRequest);
     }
@@ -89,7 +89,7 @@ public class QbittorrentServiceTest {
         HttpEntity<MultiValueMap<String, String>> expectedRequest = createDeleteRequest();
         Mockito.when(restTemplate.postForLocation(expectedUri, expectedRequest))
                 .thenAnswer(new ForbiddenThenSuccessAnswer());
-        service.deleteTorrentById(id);
+        service.deleteTorrentById(id, false);
         InOrder order = Mockito.inOrder(authorization, restTemplate);
         // Try to use existing SID for authentication.
         order.verify(authorization).applyTo(expectedRequest.getHeaders());
@@ -107,7 +107,42 @@ public class QbittorrentServiceTest {
     public void failToDeleteTorrentById() {
         Mockito.when(restTemplate.postForLocation(baseUri.resolve("/command/delete"), createDeleteRequest()))
                 .thenThrow(Mockito.mock(RuntimeException.class));
-        service.deleteTorrentById(id);
+        service.deleteTorrentById(id, false);
+    }
+
+    @Test
+    public void deleteTorrentWithContentsById() {
+        HttpEntity<MultiValueMap<String, String>> expectedRequest = createDeleteRequest();
+        service.deleteTorrentById(id, true);
+        Mockito.verify(authorization).applyTo(expectedRequest.getHeaders());
+        Mockito.verify(restTemplate).postForLocation(baseUri.resolve("/command/deletePerm"), expectedRequest);
+    }
+
+    @Test
+    public void renewAuthorizationAndDeleteTorrentWithContentsById() {
+        URI expectedUri = baseUri.resolve("/command/deletePerm");
+        HttpEntity<MultiValueMap<String, String>> expectedRequest = createDeleteRequest();
+        Mockito.when(restTemplate.postForLocation(expectedUri, expectedRequest))
+                .thenAnswer(new ForbiddenThenSuccessAnswer());
+        service.deleteTorrentById(id, true);
+        InOrder order = Mockito.inOrder(authorization, restTemplate);
+        // Try to use existing SID for authentication.
+        order.verify(authorization).applyTo(expectedRequest.getHeaders());
+        // Try to create torrent and fail.
+        order.verify(restTemplate).postForLocation(expectedUri, expectedRequest);
+        // Renew authorization.
+        order.verify(authorization).renew();
+        // Apply newly obtained SID to a new download request.
+        order.verify(authorization).applyTo(expectedRequest.getHeaders());
+        // Try to create torrent second time.
+        order.verify(restTemplate).postForLocation(expectedUri, expectedRequest);
+    }
+
+    @Test(expected = QbittorrentService.DeleteTorrentError.class)
+    public void failToDeleteTorrentWithContentsById() {
+        Mockito.when(restTemplate.postForLocation(baseUri.resolve("/command/deletePerm"), createDeleteRequest()))
+                .thenThrow(Mockito.mock(RuntimeException.class));
+        service.deleteTorrentById(id, true);
     }
 
     @Test
