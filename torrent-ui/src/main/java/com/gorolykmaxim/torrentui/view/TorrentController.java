@@ -56,6 +56,19 @@ public class TorrentController {
     }
 
     @GetMapping("delete/{id}")
+    public ModelAndView showDeleteTorrentPrompt(@PathVariable("id") String id) {
+        try {
+            ModelAndView modelAndView = new ModelAndView("delete");
+            modelAndView.addObject("torrent", downloadingTorrentRepository.findById(id));
+            modelAndView.addObject("deleteUrl", String.format("/delete/%s/confirm", id));
+            modelAndView.addObject("cancelUrl", "/");
+            return modelAndView;
+        } catch (RuntimeException e) {
+            throw new ViewError(e);
+        }
+    }
+
+    @GetMapping("delete/{id}/confirm")
     public String deleteTorrentById(@PathVariable("id") String id) {
         try {
             torrentRepository.deleteById(id);

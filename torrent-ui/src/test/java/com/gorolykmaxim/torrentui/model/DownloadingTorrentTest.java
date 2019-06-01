@@ -5,10 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DownloadingTorrentTest {
     private TorrentService service;
@@ -22,6 +19,27 @@ public class DownloadingTorrentTest {
         sort = "progress";
         reverse = true;
         repository = new DownloadingTorrentRepository(service, sort, reverse);
+    }
+
+    @Test
+    public void findById() {
+        String id = UUID.randomUUID().toString();
+        DownloadingTorrent downloadingTorrent = Mockito.mock(DownloadingTorrent.class);
+        List<DownloadingTorrent> downloadingTorrentList = Collections.singletonList(downloadingTorrent);
+        Map<String, String> expectedParameters = new HashMap<>();
+        expectedParameters.put("hashes", id);
+        Mockito.when(service.find(expectedParameters)).thenReturn(downloadingTorrentList);
+        DownloadingTorrent actualDownloadingTorrent = repository.findById(id);
+        Assert.assertEquals(downloadingTorrent, actualDownloadingTorrent);
+    }
+
+    @Test(expected = DownloadingTorrentRepository.TorrentDoesNotExistError.class)
+    public void failToFindByIdSinceSuchTorrentDoesNotExist() {
+        String id = UUID.randomUUID().toString();
+        Map<String, String> expectedParameters = new HashMap<>();
+        expectedParameters.put("hashes", id);
+        Mockito.when(service.find(expectedParameters)).thenReturn(Collections.emptyList());
+        repository.findById(id);
     }
 
     @Test

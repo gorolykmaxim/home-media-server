@@ -58,6 +58,26 @@ public class TorrentControllerTest {
     }
 
     @Test
+    public void showDeleteTorrentPrompt() {
+        String id = UUID.randomUUID().toString();
+        DownloadingTorrent torrent = Mockito.mock(DownloadingTorrent.class);
+        Mockito.when(downloadingTorrentRepository.findById(id)).thenReturn(torrent);
+        ModelAndView modelAndView = controller.showDeleteTorrentPrompt(id);
+        Assert.assertEquals("delete", modelAndView.getViewName());
+        Map<String, Object> model = modelAndView.getModel();
+        Assert.assertEquals(torrent, model.get("torrent"));
+        Assert.assertEquals(String.format("/delete/%s/confirm", id), model.get("deleteUrl"));
+        Assert.assertEquals("/", model.get("cancelUrl"));
+    }
+
+    @Test(expected = ViewError.class)
+    public void failToShowDeleteTorrentPrompt() {
+        String id = UUID.randomUUID().toString();
+        Mockito.when(downloadingTorrentRepository.findById(id)).thenThrow(Mockito.mock(DownloadingTorrentRepository.TorrentDoesNotExistError.class));
+        controller.showDeleteTorrentPrompt(id);
+    }
+
+    @Test
     public void deleteTorrentById() {
         String id = UUID.randomUUID().toString();
         String viewName = controller.deleteTorrentById(id);

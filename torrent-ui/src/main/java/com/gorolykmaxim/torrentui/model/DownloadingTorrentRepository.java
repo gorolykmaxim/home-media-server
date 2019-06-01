@@ -15,6 +15,16 @@ public class DownloadingTorrentRepository {
         this.reverse = reverse;
     }
 
+    public DownloadingTorrent findById(String id) {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("hashes", id);
+        List<DownloadingTorrent> torrents = service.find(parameters);
+        if (torrents.isEmpty()) {
+            throw new TorrentDoesNotExistError(id);
+        }
+        return torrents.get(0);
+    }
+
     public List<DownloadingTorrent> findAll() {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("sort", sort);
@@ -28,5 +38,11 @@ public class DownloadingTorrentRepository {
         parameters.put("reverse", Boolean.toString(reverse));
         parameters.put("filter", "downloading");
         return service.find(parameters);
+    }
+
+    public static class TorrentDoesNotExistError extends RuntimeException {
+        public TorrentDoesNotExistError(String id) {
+            super(String.format("Torrent with ID '%s' does not exist", id));
+        }
     }
 }
