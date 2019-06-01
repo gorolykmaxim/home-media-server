@@ -44,21 +44,3 @@ services:
     ports:
       - 8081:8080
     restart: always
-#  # Plex logs listener, that notifies home-media-app about different events in Plex
-#  plex-listener:
-#    image: gorolykmaxim/plex-listener:1.1.5
-#    container_name: plex-listener
-#    environment:
-#      - MESSAGE_REGEXP=.*\'(.*)\'( -)? got played.*
-#      - HOME_MEDIA_APP_URL=http://home-media-app:8080/api/v1/episode/view
-#      - ATTRIBUTE_NAME=episodeName
-#    depends_on:
-#      - plex
-#    restart: always
-#  # Single page web-ui
-#  web-ui:
-#    image: gorolykmaxim/web-ui:1.0.1
-#    container_name: web-ui
-#    ports:
-#      - 80:80
-#    restart: always

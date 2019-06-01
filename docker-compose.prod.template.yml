@@ -20,6 +20,3 @@ services:
     user: '{userId}:{userGroupId}'
     volumes:
       - {configFolderPath}:/data
-#  plex-listener:
-#    volumes:
-#      - {mediaLogsFolderPath}:/plex/logs
