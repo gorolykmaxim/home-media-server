@@ -49,7 +49,7 @@ services:
     image: spotify/kafka
     container_name: kafka
     environment:
-      - ADVERTISED_HOST=0.0.0.0
+      - ADVERTISED_HOST=kafka
       - ADVERTISED_PORT=9092
     ports:
       - 2181:2181
