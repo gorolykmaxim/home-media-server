@@ -44,6 +44,13 @@ services:
     ports:
       - 8081:8080
     restart: always
+  # collector and analyzer of plex logs, that publishes some of them to the message queue
+  plex-log-collector:
+    image: gorolykmaxim/plex-log-collector
+    container_name: plex-log-collector
+    depends_on:
+      - kafka
+    restart: always
   # consumer-based message queue, kafka
   kafka:
     image: spotify/kafka

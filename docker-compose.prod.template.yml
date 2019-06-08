@@ -15,6 +15,10 @@ services:
     volumes:
       - {mediaFolderPath}:/media
       - {configFolderPath}:/config
+  # collector and analyzer of plex logs, that publishes some of them to the message queue
+  plex-log-collector:
+    volumes:
+      - {configFolderPath}:/data
   # mobile-friendly web ui for torrent service
   torrent-ui:
     user: '{userId}:{userGroupId}'
