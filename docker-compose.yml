@@ -44,3 +44,14 @@ services:
     ports:
       - 8081:8080
     restart: always
+  # consumer-based message queue, kafka
+  kafka:
+    image: spotify/kafka
+    container_name: kafka
+    environment:
+      - ADVERTISED_HOST=0.0.0.0
+      - ADVERTISED_PORT=9092
+    ports:
+      - 2181:2181
+      - 9092:9092
+    restart: always
