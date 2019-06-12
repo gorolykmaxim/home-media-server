@@ -19,4 +19,4 @@ sed -i '' "s@{mediaFolderPath}@${MEDIA_FOLDER_PATH}@g" docker-compose.prod.yml
 sed -i '' "s@{mediaLogsFolderPath}@${MEDIA_LOGS_FOLDER_PATH}@g" docker-compose.prod.yml
 
 # Deploy containers
-sudo docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+sudo docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
