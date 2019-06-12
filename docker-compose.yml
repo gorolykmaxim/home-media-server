@@ -62,3 +62,22 @@ services:
       - 2181:2181
       - 9092:9092
     restart: always
+  # service that tells you what videos you have watched
+  videos-watched:
+    image: gorolykmaxim/videos-watched
+    container_name: videos-watched
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_MVC_VIEW_PREFIX=/WEB-INF/view/
+      - SPRING_MVC_VIEW_SUFFIX=.jsp
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/data/videos-watched
+      - SPRING_DATASOURCE_USERNAME=videoswatched
+      - SPRING_DATASOURCE_PASSWORD=videoswatched
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - VIDEOS_WATCHED_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - VIDEOS_WATCHED_KAFKA_CONSUMER_GROUP_ID=videos-watched
+    depends_on:
+      - kafka
+    ports:
+      - 8082:8080
+    restart: always
