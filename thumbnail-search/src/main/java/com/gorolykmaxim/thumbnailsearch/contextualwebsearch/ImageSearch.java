@@ -20,8 +20,8 @@ public class ImageSearch implements ThumbnailRepository {
     }
 
     @Override
-    public Optional<Thumbnail> findThumbnailBySearchTermAndIndex(String searchTerm) {
-        Optional<CachedImage> possibleCachedImage = cache.findBySearchTermAndIndex(searchTerm);
+    public Optional<Thumbnail> findThumbnailBySearchTerm(String searchTerm) {
+        Optional<CachedImage> possibleCachedImage = cache.findBySearchTerm(searchTerm);
         if (!possibleCachedImage.isPresent()) {
             ImageList imageList = searchApi.findImagesBySearchTerm(searchTerm);
             if (imageList.getImages().size() == 0) {

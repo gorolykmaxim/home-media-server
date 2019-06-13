@@ -21,7 +21,7 @@ public class ImageCache {
         random = new Random();
     }
 
-    public Optional<CachedImage> findBySearchTermAndIndex(String searchTerm) {
+    public Optional<CachedImage> findBySearchTerm(String searchTerm) {
         List<CachedImage> cachedImageList = repository.findAllBySearchTermLike(searchTerm);
         if (cachedImageList.isEmpty()) {
             return Optional.empty();

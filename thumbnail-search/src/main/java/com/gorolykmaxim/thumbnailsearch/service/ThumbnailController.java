@@ -20,6 +20,6 @@ public class ThumbnailController {
 
     @GetMapping
     public Optional<Thumbnail> findBySearchTerm(@RequestParam String searchTerm) {
-        return repository.findThumbnailBySearchTermAndIndex(searchTerm);
+        return repository.findThumbnailBySearchTerm(searchTerm);
     }
 }
