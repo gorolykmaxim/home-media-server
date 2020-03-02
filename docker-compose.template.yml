@@ -2,10 +2,14 @@ version: "3"
 services:
   # torrent client to download media from the internet
   qbittorrent:
-    image: linuxserver/qbittorrent
+    image: linuxserver/qbittorrent:4.3.0202003011834-6876-b519eceubuntu18.04.1-ls16
     container_name: qbittorrent
     environment:
       - WEBUI_PORT=8080
+      - PUID={userId}
+      - PGID={userGroupId}
+    volumes:
+      - {mediaFolderPath}:/media
     ports:
       - 6881:6881
       - 6881:6881/udp
@@ -13,16 +17,21 @@ services:
     restart: always
   # media server to distribute downloaded media on the local network
   plex:
-    image: linuxserver/plex
+    image: linuxserver/plex:1.18.7.2457-77cb9455c-ls80
     container_name: plex
     environment:
       - VERSION=docker
+      - PUID={userId}
+      - PGID={userGroupId}
+    volumes:
+      - {mediaFolderPath}:/media
+      - {configFolderPath}:/config
     # Plex doesn't really run well behind NAT, so it is advised to use "host" network_mode
     network_mode: host
     restart: always
   # mobile-friendly web ui for torrent service
   torrent-ui:
-    image: gorolykmaxim/torrent-ui
+    build: torrent-ui
     container_name: torrent-ui
     environment:
       - SERVER_PORT=8080
@@ -41,13 +50,18 @@ services:
       - TORRENT_UI_TORRENT_REVERSE=true
       - TORRENT_UI_TORRENT_DEFAULT_DOWNLOAD_FOLDER=/media/
       - TORRENT_UI_TORRENT_REFRESH_INTERVAL=1000
+    user: '{userId}:{userGroupId}'
+    volumes:
+      - {configFolderPath}:/data
     ports:
       - 8081:8080
     restart: always
   # collector and analyzer of plex logs, that publishes some of them to the message queue
   plex-log-collector:
-    image: gorolykmaxim/plex-log-collector
+    build: plex-log-collector
     container_name: plex-log-collector
+    volumes:
+      - {configFolderPath}:/data
     depends_on:
       - kafka
     restart: always
