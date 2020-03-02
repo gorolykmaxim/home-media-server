@@ -8,14 +8,9 @@
     </head>
     <body>
         <app:navigation></app:navigation>
-        <div class="p-2">
-            <div class="alert alert-danger" role="alert">
-                <h4 class="alert-heading">Whoops...</h4>
-                <p class="app-truncate">${error}</p>
-                <hr>
-                <p class="mb-0">See more details in page source.</p>
-            </div>
-        </div>
-        <!--${stackTrace}-->
+        <jsp:include page="error-component.jsp">
+            <jsp:param name="error" value="${error}"/>
+            <jsp:param name="stackTrace" value="${stackTrace}"/>
+        </jsp:include>
     </body>
 </html>

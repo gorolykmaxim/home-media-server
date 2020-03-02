@@ -22,12 +22,14 @@ public class TorrentController {
     private TorrentFactory factory;
     private TorrentRepository torrentRepository;
     private DownloadingTorrentRepository downloadingTorrentRepository;
+    private ErrorControllerAdvice errorControllerAdvice;
 
     @Autowired
     public TorrentController(TorrentFactory factory, TorrentRepository torrentRepository, DownloadingTorrentRepository downloadingTorrentRepository) {
         this.factory = factory;
         this.torrentRepository = torrentRepository;
         this.downloadingTorrentRepository = downloadingTorrentRepository;
+        errorControllerAdvice = new ErrorControllerAdvice();
     }
 
     @Value("${torrent-ui.torrent.default-download-folder}")
@@ -56,7 +58,9 @@ public class TorrentController {
             modelAndView.addObject("deleteUrlPrefix", "/delete");
             return modelAndView;
         } catch (RuntimeException e) {
-            throw new ViewError(e);
+            ModelAndView modelAndView = new ModelAndView("error-component");
+            errorControllerAdvice.applyErrorInformationTo(modelAndView, new ViewError(e));
+            return modelAndView;
         }
     }
 

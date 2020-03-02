@@ -13,12 +13,15 @@ public class ErrorControllerAdvice {
     @ExceptionHandler(ViewError.class)
     public ModelAndView showError(Throwable e) {
         ModelAndView modelAndView = new ModelAndView("error");
+        applyErrorInformationTo(modelAndView, e);
+        return modelAndView;
+    }
+
+    public void applyErrorInformationTo(ModelAndView modelAndView, Throwable e) {
         StringWriter errorStackTraceWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(errorStackTraceWriter);
         e.printStackTrace(printWriter);
         modelAndView.addObject("error", e.getMessage());
         modelAndView.addObject("stackTrace", errorStackTraceWriter.toString());
-        return modelAndView;
     }
-
 }

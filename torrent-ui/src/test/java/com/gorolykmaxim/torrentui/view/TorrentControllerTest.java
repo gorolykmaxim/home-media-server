@@ -52,10 +52,16 @@ public class TorrentControllerTest {
         Assert.assertEquals("/delete", model.get("deleteUrlPrefix"));
     }
 
-    @Test(expected = ViewError.class)
+    @Test()
     public void failToRenderTorrentList() {
-        Mockito.when(downloadingTorrentRepository.findAll()).thenThrow(Mockito.mock(RuntimeException.class));
-        controller.renderTorrentList();
+        RuntimeException expectedError = new RuntimeException("Error");
+        ViewError expectedViewError = new ViewError(expectedError);
+        Mockito.when(downloadingTorrentRepository.findAll()).thenThrow(expectedError);
+        ModelAndView modelAndView = controller.renderTorrentList();
+        Assert.assertEquals("error-component", modelAndView.getViewName());
+        Map<String, Object> model = modelAndView.getModel();
+        Assert.assertEquals(expectedViewError.getMessage(), model.get("error"));
+        Assert.assertNotNull(model.get("stackTrace"));
     }
 
     @Test
