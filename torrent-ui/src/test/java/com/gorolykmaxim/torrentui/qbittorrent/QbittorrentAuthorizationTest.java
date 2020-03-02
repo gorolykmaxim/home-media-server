@@ -33,7 +33,7 @@ public class QbittorrentAuthorizationTest {
         sidCookie = "SID";
         uri = URI.create("http://localhost:8080");
         authorization = new QbittorrentAuthorization(restTemplate, username, password, uri, repository);
-        uri = uri.resolve("/login");
+        uri = uri.resolve("/api/v2/auth/login");
         sidValue = "3133exaykXDX0mUQRDukIr9YUi0EchFY";
     }
 

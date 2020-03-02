@@ -33,11 +33,12 @@ public class QbittorrentService implements TorrentService {
 
     @Override
     public List<DownloadingTorrent> find(Map<String, String> parameters) {
+        URI uri = baseUri.resolve("/api/v2/torrents/info");
         try {
             HttpHeaders httpHeaders = new HttpHeaders();
             authorization.applyTo(httpHeaders);
             HttpEntity request = new HttpEntity(httpHeaders);
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUri.resolve("/query/torrents").toString());
+            UriComponentsBuilder builder = UriComponentsBuilder.fromUri(uri);
             for (Map.Entry<String, String> parameter: parameters.entrySet()) {
                 builder.queryParam(parameter.getKey(), parameter.getValue());
             }
@@ -53,12 +54,13 @@ public class QbittorrentService implements TorrentService {
             authorization.renew();
             return find(parameters);
         } catch (RuntimeException e) {
-            throw new GetTorrentsError(baseUri, parameters, e);
+            throw new GetTorrentsError(uri, parameters, e);
         }
     }
 
     @Override
     public void downloadViaMagnetLink(String magnetLink, String downloadFolder) throws DownloadTorrentError {
+        URI uri = baseUri.resolve("/api/v2/torrents/add");
         try {
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -67,33 +69,33 @@ public class QbittorrentService implements TorrentService {
             body.add("urls", magnetLink);
             body.add("savepath", downloadFolder);
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, httpHeaders);
-            restTemplate.postForLocation(baseUri.resolve("/command/download"), request);
+            restTemplate.postForLocation(uri, request);
         } catch (HttpClientErrorException.Forbidden e) {
             // Possibly existing authorization has expired. Try to renew.
             authorization.renew();
             downloadViaMagnetLink(magnetLink, downloadFolder);
         } catch (RuntimeException e) {
-            throw new DownloadTorrentError(baseUri, magnetLink, downloadFolder, e);
+            throw new DownloadTorrentError(uri, magnetLink, downloadFolder, e);
         }
     }
 
     @Override
     public void deleteTorrentById(String id, boolean deleteData) throws DeleteTorrentError {
+        URI uri = UriComponentsBuilder.fromUri(baseUri.resolve("/api/v2/torrents/delete"))
+                .queryParam("hashes", id)
+                .queryParam("deleteFiles", deleteData)
+                .build().toUri();
         try {
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
             authorization.applyTo(httpHeaders);
-            MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-            body.add("hashes", id);
-            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, httpHeaders);
-            URI uri = deleteData ? baseUri.resolve("/command/deletePerm") : baseUri.resolve("/command/delete");
-            restTemplate.postForLocation(uri, request);
+            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(httpHeaders);
+            restTemplate.exchange(uri, HttpMethod.GET, request, Void.class);
         } catch (HttpClientErrorException.Forbidden e) {
             // Possibly existing authorization has expired. Try to renew.
             authorization.renew();
             deleteTorrentById(id, deleteData);
         } catch (RuntimeException e) {
-            throw new DeleteTorrentError(baseUri, id, e);
+            throw new DeleteTorrentError(uri, id, e);
         }
     }
 

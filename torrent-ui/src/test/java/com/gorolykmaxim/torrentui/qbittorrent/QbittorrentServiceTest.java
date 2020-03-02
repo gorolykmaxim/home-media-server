@@ -45,12 +45,12 @@ public class QbittorrentServiceTest {
         HttpEntity<MultiValueMap<String, String>> expectedRequest = createDownloadRequest();
         service.downloadViaMagnetLink(magnetLink, downloadFolder);
         Mockito.verify(authorization).applyTo(expectedRequest.getHeaders());
-        Mockito.verify(restTemplate).postForLocation(baseUri.resolve("/command/download"), expectedRequest);
+        Mockito.verify(restTemplate).postForLocation(baseUri.resolve("/api/v2/torrents/add"), expectedRequest);
     }
 
     @Test
     public void renewAuthorizationAndDownloadViaMagnetLink() {
-        URI expectedUri = baseUri.resolve("/command/download");
+        URI expectedUri = baseUri.resolve("/api/v2/torrents/add");
         HttpEntity<MultiValueMap<String, String>> expectedRequest = createDownloadRequest();
         Mockito.when(restTemplate.postForLocation(expectedUri, expectedRequest))
                 .thenAnswer(new ForbiddenThenSuccessAnswer());
@@ -70,77 +70,77 @@ public class QbittorrentServiceTest {
 
     @Test(expected = QbittorrentService.DownloadTorrentError.class)
     public void failToDownloadTorrent() {
-        Mockito.when(restTemplate.postForLocation(baseUri.resolve("/command/download"), createDownloadRequest()))
+        Mockito.when(restTemplate.postForLocation(baseUri.resolve("/api/v2/torrents/add"), createDownloadRequest()))
                 .thenThrow(Mockito.mock(RuntimeException.class));
         service.downloadViaMagnetLink(magnetLink, downloadFolder);
     }
 
     @Test
     public void deleteTorrentById() {
-        HttpEntity<MultiValueMap<String, String>> expectedRequest = createDeleteRequest();
+        HttpEntity<?> expectedRequest = new HttpEntity<>(new HttpHeaders());
         service.deleteTorrentById(id, false);
         Mockito.verify(authorization).applyTo(expectedRequest.getHeaders());
-        Mockito.verify(restTemplate).postForLocation(baseUri.resolve("/command/delete"), expectedRequest);
+        Mockito.verify(restTemplate).exchange(createDeleteUri(id, false), HttpMethod.GET, expectedRequest, Void.class);
     }
 
     @Test
     public void renewAuthorizationAndDeleteTorrentById() {
-        URI expectedUri = baseUri.resolve("/command/delete");
-        HttpEntity<MultiValueMap<String, String>> expectedRequest = createDeleteRequest();
-        Mockito.when(restTemplate.postForLocation(expectedUri, expectedRequest))
+        URI expectedUri = createDeleteUri(id, false);
+        HttpEntity<?> expectedRequest = new HttpEntity<>(new HttpHeaders());
+        Mockito.when(restTemplate.exchange(expectedUri, HttpMethod.GET, expectedRequest, Void.class))
                 .thenAnswer(new ForbiddenThenSuccessAnswer());
         service.deleteTorrentById(id, false);
         InOrder order = Mockito.inOrder(authorization, restTemplate);
         // Try to use existing SID for authentication.
         order.verify(authorization).applyTo(expectedRequest.getHeaders());
         // Try to create torrent and fail.
-        order.verify(restTemplate).postForLocation(expectedUri, expectedRequest);
+        order.verify(restTemplate).exchange(expectedUri, HttpMethod.GET, expectedRequest, Void.class);
         // Renew authorization.
         order.verify(authorization).renew();
         // Apply newly obtained SID to a new download request.
         order.verify(authorization).applyTo(expectedRequest.getHeaders());
         // Try to create torrent second time.
-        order.verify(restTemplate).postForLocation(expectedUri, expectedRequest);
+        order.verify(restTemplate).exchange(expectedUri, HttpMethod.GET, expectedRequest, Void.class);
     }
 
     @Test(expected = QbittorrentService.DeleteTorrentError.class)
     public void failToDeleteTorrentById() {
-        Mockito.when(restTemplate.postForLocation(baseUri.resolve("/command/delete"), createDeleteRequest()))
+        Mockito.when(restTemplate.exchange(createDeleteUri(id, false), HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), Void.class))
                 .thenThrow(Mockito.mock(RuntimeException.class));
         service.deleteTorrentById(id, false);
     }
 
     @Test
     public void deleteTorrentWithContentsById() {
-        HttpEntity<MultiValueMap<String, String>> expectedRequest = createDeleteRequest();
+        HttpEntity<?> expectedRequest = new HttpEntity<>(new HttpHeaders());
         service.deleteTorrentById(id, true);
         Mockito.verify(authorization).applyTo(expectedRequest.getHeaders());
-        Mockito.verify(restTemplate).postForLocation(baseUri.resolve("/command/deletePerm"), expectedRequest);
+        Mockito.verify(restTemplate).exchange(createDeleteUri(id, true), HttpMethod.GET, expectedRequest, Void.class);
     }
 
     @Test
     public void renewAuthorizationAndDeleteTorrentWithContentsById() {
-        URI expectedUri = baseUri.resolve("/command/deletePerm");
-        HttpEntity<MultiValueMap<String, String>> expectedRequest = createDeleteRequest();
-        Mockito.when(restTemplate.postForLocation(expectedUri, expectedRequest))
+        URI expectedUri = createDeleteUri(id, true);
+        HttpEntity<?> expectedRequest = new HttpEntity<>(new HttpHeaders());
+        Mockito.when(restTemplate.exchange(expectedUri, HttpMethod.GET, expectedRequest, Void.class))
                 .thenAnswer(new ForbiddenThenSuccessAnswer());
         service.deleteTorrentById(id, true);
         InOrder order = Mockito.inOrder(authorization, restTemplate);
         // Try to use existing SID for authentication.
         order.verify(authorization).applyTo(expectedRequest.getHeaders());
         // Try to create torrent and fail.
-        order.verify(restTemplate).postForLocation(expectedUri, expectedRequest);
+        order.verify(restTemplate).exchange(expectedUri, HttpMethod.GET, expectedRequest, Void.class);
         // Renew authorization.
         order.verify(authorization).renew();
         // Apply newly obtained SID to a new download request.
         order.verify(authorization).applyTo(expectedRequest.getHeaders());
         // Try to create torrent second time.
-        order.verify(restTemplate).postForLocation(expectedUri, expectedRequest);
+        order.verify(restTemplate).exchange(expectedUri, HttpMethod.GET, expectedRequest, Void.class);
     }
 
     @Test(expected = QbittorrentService.DeleteTorrentError.class)
     public void failToDeleteTorrentWithContentsById() {
-        Mockito.when(restTemplate.postForLocation(baseUri.resolve("/command/deletePerm"), createDeleteRequest()))
+        Mockito.when(restTemplate.exchange(createDeleteUri(id, true), HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), Void.class))
                 .thenThrow(Mockito.mock(RuntimeException.class));
         service.deleteTorrentById(id, true);
     }
@@ -208,12 +208,12 @@ public class QbittorrentServiceTest {
         return new HttpEntity<>(body, headers);
     }
 
-    private HttpEntity<MultiValueMap<String, String>> createDeleteRequest() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("hashes", id);
-        return new HttpEntity<>(body, headers);
+    private URI createDeleteUri(String id, boolean deleteData) {
+        return UriComponentsBuilder.fromUri(baseUri.resolve("/api/v2/torrents/delete"))
+                .queryParam("hashes", id)
+                .queryParam("deleteFiles", deleteData)
+                .build()
+                .toUri();
     }
 
     private HttpEntity createFindAllRequest() {
@@ -228,7 +228,7 @@ public class QbittorrentServiceTest {
     }
 
     private URI createFindAllRequestUri(Map<String, String> parameters) {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUri.resolve("/query/torrents").toString());
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUri.resolve("/api/v2/torrents/info").toString());
         for (Map.Entry<String, String> parameter: parameters.entrySet()) {
             builder.queryParam(parameter.getKey(), parameter.getValue());
         }

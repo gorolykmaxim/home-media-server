@@ -35,6 +35,7 @@ public class QbittorrentAuthorization {
     }
 
     public void renew() throws AuthorizationRenewalError {
+        URI uri = baseUri.resolve("/api/v2/auth/login");
         try {
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -42,7 +43,7 @@ public class QbittorrentAuthorization {
             body.add("username", username);
             body.add("password", password);
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, httpHeaders);
-            ResponseEntity<String> response = restTemplate.postForEntity(baseUri.resolve("/login"), request, String.class);
+            ResponseEntity<String> response = restTemplate.postForEntity(uri, request, String.class);
             HttpHeaders responseHeaders = response.getHeaders();
             String setCookieHeader = responseHeaders.getFirst(HttpHeaders.SET_COOKIE);
             if (setCookieHeader == null) {
@@ -53,7 +54,7 @@ public class QbittorrentAuthorization {
             KeyValue keyValue = new KeyValue(sidKeyName, cookie.getValue());
             keyValueRepository.save(keyValue);
         } catch (RuntimeException e) {
-            throw new AuthorizationRenewalError(username, password, baseUri, e);
+            throw new AuthorizationRenewalError(username, password, uri, e);
         }
     }
 
