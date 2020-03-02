@@ -24,13 +24,3 @@ services:
     user: '{userId}:{userGroupId}'
     volumes:
       - {configFolderPath}:/data
-  # service that tells you what videos you have watched
-  videos-watched:
-    user: '{userId}:{userGroupId}'
-    volumes:
-      - {configFolderPath}:/data
-  # service that searches images based on the specified search query
-  thumbnail-search:
-    user: '{userId}:{userGroupId}'
-    volumes:
-      - {configFolderPath}:/data
