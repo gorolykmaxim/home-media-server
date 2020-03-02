@@ -9,4 +9,4 @@ services:
     image: gorolykmaxim/plex-log-collector:1.0.1
   # mobile-friendly web ui for torrent service
   torrent-ui:
-    image: gorolykmaxim/torrent-ui:1.1.0
+    image: gorolykmaxim/torrent-ui:1.1.1

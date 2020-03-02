@@ -22,8 +22,10 @@
                                 <input type="checkbox" class="form-check-input" id="deleteData" name="deleteData">
                                 <label class="form-check-label" for="deleteData">Delete downloaded files</label>
                             </div>
-                            <button type="submit" class="btn btn-danger mt-2">Delete</button>
-                            <a class="btn btn-light" href="${cancelUrl}">Cancel</a>
+                            <div class="mt-2">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                                <a class="btn btn-light" href="${cancelUrl}">Cancel</a>
+                            </div>
                         </form>
                     </div>
                 </div>
