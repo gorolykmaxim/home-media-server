@@ -5,7 +5,7 @@ if [ "$1" == '-d' ]
 then
   echo Running in development environment
   function get_root_folder_path() {
-      stat -f /tmp
+      stat -f /tmp/home-media-server
   }
   function platform_sed() {
       sed -i '' "$1" "$2"
