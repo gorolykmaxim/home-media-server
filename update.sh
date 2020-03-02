@@ -11,7 +11,7 @@ then
       sed -i '' "$1" "$2"
   }
   function compose() {
-      sudo docker-compose -f docker-compose.yml up -d --build
+      sudo docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
   }
 else
   echo Running in production environment

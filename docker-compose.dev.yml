@@ -2,11 +2,11 @@ version: "3"
 services:
   # media server to distribute downloaded media on the local network
   plex:
-    # Plex doesn't really run well behind NAT, so it is advised to use "host" network_mode
-    network_mode: host
+    ports:
+      - 32400:32400
   # collector and analyzer of plex logs, that publishes some of them to the message queue
   plex-log-collector:
-    image: gorolykmaxim/plex-log-collector:1.0.1
+    build: plex-log-collector
   # mobile-friendly web ui for torrent service
   torrent-ui:
-    image: gorolykmaxim/torrent-ui:1.1.0
+    build: torrent-ui

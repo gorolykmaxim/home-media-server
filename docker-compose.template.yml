@@ -26,13 +26,9 @@ services:
     volumes:
       - {mediaFolderPath}:/media
       - {configFolderPath}:/config
-    # Plex doesn't really run well behind NAT, so it is advised to use "host" network_mode
-    ports:
-      - 32400:32400
     restart: always
   # mobile-friendly web ui for torrent service
   torrent-ui:
-    build: torrent-ui
     container_name: torrent-ui
     environment:
       - SERVER_PORT=8080
@@ -59,7 +55,6 @@ services:
     restart: always
   # collector and analyzer of plex logs, that publishes some of them to the message queue
   plex-log-collector:
-    build: plex-log-collector
     container_name: plex-log-collector
     volumes:
       - {configFolderPath}:/data
