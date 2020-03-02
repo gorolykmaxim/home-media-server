@@ -27,7 +27,8 @@ services:
       - {mediaFolderPath}:/media
       - {configFolderPath}:/config
     # Plex doesn't really run well behind NAT, so it is advised to use "host" network_mode
-    network_mode: host
+    ports:
+      - 32400:32400
     restart: always
   # mobile-friendly web ui for torrent service
   torrent-ui:

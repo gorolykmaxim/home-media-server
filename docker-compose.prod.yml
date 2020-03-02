@@ -1,5 +1,8 @@
 version: "3"
 services:
+  # media server to distribute downloaded media on the local network
+  plex:
+    network_mode: host
   # collector and analyzer of plex logs, that publishes some of them to the message queue
   plex-log-collector:
     image: gorolykmaxim/plex-log-collector
