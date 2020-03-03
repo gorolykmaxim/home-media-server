@@ -8,7 +8,7 @@ then
       stat -f /tmp/home-media-server
   }
   function compose() {
-      docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+      docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
   }
 else
   echo Running in production environment

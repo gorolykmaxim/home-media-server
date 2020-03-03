@@ -4,9 +4,3 @@ services:
   plex:
     # Plex doesn't really run well behind NAT, so it is advised to use "host" network_mode
     network_mode: host
-  # collector and analyzer of plex logs, that publishes some of them to the message queue
-  plex-log-collector:
-    image: gorolykmaxim/plex-log-collector:1.0.1
-  # mobile-friendly web ui for torrent service
-  torrent-ui:
-    image: gorolykmaxim/torrent-ui:1.1.1

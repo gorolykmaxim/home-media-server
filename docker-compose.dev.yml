@@ -4,9 +4,3 @@ services:
   plex:
     ports:
       - 32400:32400
-  # collector and analyzer of plex logs, that publishes some of them to the message queue
-  plex-log-collector:
-    build: plex-log-collector
-  # mobile-friendly web ui for torrent service
-  torrent-ui:
-    build: torrent-ui
