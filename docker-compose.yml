@@ -6,10 +6,10 @@ services:
     container_name: qbittorrent
     environment:
       - WEBUI_PORT=8080
-      - PUID={userId}
-      - PGID={userGroupId}
+      - PUID=${USER_ID}
+      - PGID=${GROUP_ID}
     volumes:
-      - {mediaFolderPath}:/media
+      - ${MEDIA_FOLDER_PATH}:/media
     ports:
       - 6881:6881
       - 6881:6881/udp
@@ -21,11 +21,11 @@ services:
     container_name: plex
     environment:
       - VERSION=docker
-      - PUID={userId}
-      - PGID={userGroupId}
+      - PUID=${USER_ID}
+      - PGID=${GROUP_ID}
     volumes:
-      - {mediaFolderPath}:/media
-      - {configFolderPath}:/config
+      - ${MEDIA_FOLDER_PATH}:/media
+      - ${ROOT_FOLDER_PATH}:/config
     restart: always
   # mobile-friendly web ui for torrent service
   torrent-ui:
@@ -47,9 +47,9 @@ services:
       - TORRENT_UI_TORRENT_REVERSE=true
       - TORRENT_UI_TORRENT_DEFAULT_DOWNLOAD_FOLDER=/media/
       - TORRENT_UI_TORRENT_REFRESH_INTERVAL=1000
-    user: '{userId}:{userGroupId}'
+    user: '${USER_ID}:${GROUP_ID}'
     volumes:
-      - {configFolderPath}:/data
+      - ${ROOT_FOLDER_PATH}:/data
     ports:
       - 8081:8080
     restart: always
@@ -57,7 +57,7 @@ services:
   plex-log-collector:
     container_name: plex-log-collector
     volumes:
-      - {configFolderPath}:/data
+      - ${ROOT_FOLDER_PATH}:/data
     depends_on:
       - kafka
     restart: always
