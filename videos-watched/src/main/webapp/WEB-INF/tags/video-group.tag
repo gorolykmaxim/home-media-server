@@ -14,11 +14,11 @@
         </div>
     </div>
     <div id="collapse-${group.name}" class="collapse" <c:if test="${parentContainer}">data-parent="#${parentContainer}"</c:if>>
-        <div class="card-body">
+        <div class="card-body app-accordion-card-body-padding-fixture">
             <div class="list-group">
                 <c:forEach var="video" items="${group.videos}">
                     <div class="list-group-item list-group-item-action">
-                        <h5 class="mb-1 app-truncate">${video.name}</h5>
+                        <p class="mb-1 app-truncate">${video.name}</p>
                         <p class="mb-0">
                             <small>${video.lastPlayedDate}</small>
                         </p>
