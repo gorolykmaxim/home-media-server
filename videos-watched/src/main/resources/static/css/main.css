@@ -1,0 +1,8 @@
+.app-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.app-accordion-button-height-fixture {
+    line-height: 2;
+}

@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.1.3.RELEASE'
+    id 'com.palantir.docker' version '0.22.1'
+}
+
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'war'
+
+group 'com.gorolykmaxim'
+version '1.0.0'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+docker {
+    name "gorolykmaxim/videos-watched:${project.version}"
+    tag "latest", "gorolykmaxim/videos-watched:latest"
+    tag "version", "gorolykmaxim/videos-watched:${project.version}"
+    files bootWar, './videos-watched.properties'
+    buildArgs([BUILD_VERSION: project.version])
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+    implementation 'org.springframework.kafka:spring-kafka:2.2.12.RELEASE'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.7'
+    implementation 'javax.servlet:jstl'
+    implementation 'com.h2database:h2'
+    implementation 'org.liquibase:liquibase-core'
+    implementation 'org.apache.commons:commons-lang3:3.9'
+    implementation 'commons-io:commons-io:2.6'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}

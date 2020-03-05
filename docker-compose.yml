@@ -56,7 +56,7 @@ services:
     restart: always
   # collector and analyzer of plex logs, that publishes some of them to the message queue
   plex-log-collector:
-    image: gorolykmaxim/plex-log-collector:1.0.1
+    image: gorolykmaxim/plex-log-collector:1.0.2
     container_name: plex-log-collector
     volumes:
       - ${ROOT_FOLDER_PATH}:/data
@@ -73,4 +73,24 @@ services:
     ports:
       - 2181:2181
       - 9092:9092
+    restart: always
+  videos-watched:
+    image: gorolykmaxim/videos-watched:1.0.0
+    container_name: videos-watched
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/data/videos-watched
+      - SPRING_DATASOURCE_USERNAME=videoswatched
+      - SPRING_DATASOURCE_PASSWORD=videoswatched
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - SPRING_KAFKA_CONSUMER_GROUP_ID=videos-watched
+      - SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET=earliest
+      - VIDEOS_WATCHED_LIBRARY_ROOT=/media
+      - VIDEOS_WATCHED_DURATION_FORMAT=m 'minutes' s 'seconds'
+    user: '${USER_ID}:${GROUP_ID}'
+    volumes:
+    - ${ROOT_FOLDER_PATH}:/data
+    - ${MEDIA_FOLDER_PATH}:/media
+    ports:
+    - 8082:8080
     restart: always
