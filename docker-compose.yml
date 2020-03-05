@@ -101,3 +101,4 @@ services:
     container_name: home-page
     ports:
     - 80:80
+    restart: always
