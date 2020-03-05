@@ -76,7 +76,7 @@ services:
     restart: always
   # service that shows history of videos being watched through plex
   videos-watched:
-    image: gorolykmaxim/videos-watched:1.0.2
+    image: gorolykmaxim/videos-watched:1.0.3
     container_name: videos-watched
     environment:
       - SERVER_PORT=8080

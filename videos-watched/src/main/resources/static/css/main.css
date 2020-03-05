@@ -10,3 +10,9 @@
 .app-accordion-card-body-padding-fixture {
     padding: 0;
 }
+
+.app-video-group-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

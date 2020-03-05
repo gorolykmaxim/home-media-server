@@ -5,15 +5,15 @@
 <div class="card">
     <div class="card-header">
         <div class="d-flex justify-content-between">
-            <h2 class="mb-0">
-                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse-${group.name}">
+            <h2 class="mb-0 w-50">
+                <button class="btn btn-link collapsed app-video-group-name w-100" type="button" data-toggle="collapse" data-target="#collapse-${group.id}">
                     ${group.name}
                 </button>
             </h2>
             <a class="btn btn-outline-danger app-accordion-button-height-fixture" href="/clear-watch-history-for-group/${group.name}">Clear watch history</a>
         </div>
     </div>
-    <div id="collapse-${group.name}" class="collapse" <c:if test="${parentContainer}">data-parent="#${parentContainer}"</c:if>>
+    <div id="collapse-${group.id}" class="collapse" <c:if test="${parentContainer}">data-parent="#${parentContainer}"</c:if>>
         <div class="card-body app-accordion-card-body-padding-fixture">
             <div class="list-group">
                 <c:forEach var="video" items="${group.videos}">

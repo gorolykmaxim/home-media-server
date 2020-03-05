@@ -1,5 +1,6 @@
 package com.gorolykmaxim.videoswatched.readmodel;
 
+import java.util.Objects;
 import java.util.TreeSet;
 
 public class VideoGroupReadModel implements Comparable<VideoGroupReadModel> {
@@ -9,6 +10,10 @@ public class VideoGroupReadModel implements Comparable<VideoGroupReadModel> {
     public VideoGroupReadModel(String name) {
         this.name = name;
         videos = new TreeSet<>();
+    }
+
+    public int getId() {
+        return Objects.hash(name);
     }
 
     public void addVideo(VideoReadModel video) {
