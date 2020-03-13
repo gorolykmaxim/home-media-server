@@ -97,7 +97,7 @@ services:
     restart: always
   # service that provides links to all services in the media server, that have web UI
   home-page:
-    image: gorolykmaxim/home-page:1.0.0
+    image: gorolykmaxim/home-page:1.0.1
     container_name: home-page
     ports:
     - 80:80

@@ -4,55 +4,97 @@
         <meta charset="UTF-8">
         <title>Home Media Server</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <link rel="stylesheet" href="bootstrap.min.css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+        <link href="https://unpkg.com/material-components-web@v4.0.0/dist/material-components-web.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <script src="https://unpkg.com/material-components-web@v4.0.0/dist/material-components-web.min.js"></script>
+        <style>
+            body {
+                margin: 0;
+            }
+            .app-padding {
+                padding: 1rem;
+            }
+        </style>
     </head>
     <body>
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <h3 class="mt-5">Home Media Server</h3>
-                </div>
+        <header class="mdc-top-app-bar mdc-top-app-bar--fixed">
+            <div class="mdc-top-app-bar__row">
+                <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                    <span class="mdc-top-app-bar__title">Home Media Server</span>
+                </section>
             </div>
-            <div class="row">
-                <div class="col-sm mt-3">
-                    <div class="card">
-                        <img src="baseline_history_white_48dp.png" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Videos watched</h5>
-                            <p class="card-text">Service that shows history of videos being watched through Plex.</p>
-                            <a id="watched-link" href="/" class="card-link stretched-link">Go to web interface</a>
+        </header>
+        <div class="mdc-top-app-bar--fixed-adjust">
+            <div class="mdc-layout-grid">
+                <div class="mdc-layout-grid__inner">
+                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3-desktop">
+                        <div class="mdc-card">
+                            <div class="mdc-card__primary-action">
+                                <div class="mdc-card__media mdc-card__media--16-9" style="background-image: url(baseline_history_white_48dp.png)"></div>
+                                <div class="app-padding">
+                                    <h2 class="mdc-typography mdc-typography--headline6">Videos watched</h2>
+                                    <div class="mdc-typography mdc-typography--body2">Service that shows history of videos being watched through Plex.</div>
+                                </div>
+                            </div>
+                            <div class="mdc-card__actions">
+                                <a id="watched-link" class="mdc-button mdc-card__action mdc-card__action--button" href="">
+                                    <div class="mdc-button__ripple"></div>
+                                    <span class="mdc-button__label">Go to web interface</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm mt-3">
-                    <div class="card">
-                        <img src="https://upload.wikimedia.org/wikipedia/uk/a/aa/UTorrent_logo.png" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Torrent UI</h5>
-                            <p class="card-text">Mobile-friendly web ui for torrent service.</p>
-                            <a id="torrent-link" href="/" class="card-link stretched-link">Go to web interface</a>
+                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3-desktop">
+                        <div class="mdc-card">
+                            <div class="mdc-card__primary-action">
+                                <div class="mdc-card__media mdc-card__media--16-9" style="background-image: url(https://upload.wikimedia.org/wikipedia/uk/a/aa/UTorrent_logo.png)"></div>
+                                <div class="app-padding">
+                                    <h2 class="mdc-typography mdc-typography--headline6">Torrent UI</h2>
+                                    <div class="mdc-typography mdc-typography--body2">Mobile-friendly web ui for torrent service.</div>
+                                </div>
+                            </div>
+                            <div class="mdc-card__actions">
+                                <a id="torrent-link" class="mdc-button mdc-card__action mdc-card__action--button" href="">
+                                    <div class="mdc-button__ripple"></div>
+                                    <span class="mdc-button__label">Go to web interface</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm mt-3">
-                    <div class="card">
-                        <img src="https://www.plex.tv/wp-content/uploads/2018/01/pmp-icon-1.png" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Plex Media Server</h5>
-                            <p class="card-text">Media server to distribute downloaded media on the local network.</p>
-                            <a id="plex-link" href="/" class="card-link stretched-link">Go to web interface</a>
+                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3-desktop">
+                        <div class="mdc-card">
+                            <div class="mdc-card__primary-action">
+                                <div class="mdc-card__media mdc-card__media--16-9" style="background-image: url(https://www.plex.tv/wp-content/uploads/2018/01/pmp-icon-1.png)"></div>
+                                <div class="app-padding">
+                                    <h2 class="mdc-typography mdc-typography--headline6">Plex Media Server</h2>
+                                    <div class="mdc-typography mdc-typography--body2">Media server to distribute downloaded media on the local network.</div>
+                                </div>
+                            </div>
+                            <div class="mdc-card__actions">
+                                <a id="plex-link" class="mdc-button mdc-card__action mdc-card__action--button" href="">
+                                    <div class="mdc-button__ripple"></div>
+                                    <span class="mdc-button__label">Go to web interface</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm mt-3">
-                    <div class="card">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/66/New_qBittorrent_Logo.svg" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">QBittorrent</h5>
-                            <p class="card-text">Torrent client to download media from the internet.</p>
-                            <p class="card-text">If this link does not work for you - disable CSRF protection in qbittorrent.</p>
-                            <a id="qbittorrent-link" href="/" class="card-link stretched-link">Go to web interface</a>
+                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3-desktop">
+                        <div class="mdc-card">
+                            <div class="mdc-card__primary-action">
+                                <div class="mdc-card__media mdc-card__media--16-9" style="background-image: url(https://upload.wikimedia.org/wikipedia/commons/6/66/New_qBittorrent_Logo.svg)"></div>
+                                <div class="app-padding">
+                                    <h2 class="mdc-typography mdc-typography--headline6">QBittorrent</h2>
+                                    <div class="mdc-typography mdc-typography--body1">Torrent client to download media from the internet.</div>
+                                    <h3 class="mdc-typography mdc-typography--subtitle2">If this link does not work for you - disable CSRF protection in qbittorrent.</h3>
+                                </div>
+                            </div>
+                            <div class="mdc-card__actions">
+                                <a id="qbittorrent-link" class="mdc-button mdc-card__action mdc-card__action--button" href="">
+                                    <div class="mdc-button__ripple"></div>
+                                    <span class="mdc-button__label">Go to web interface</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
