@@ -18,7 +18,6 @@ public class QbittorrentTest {
     private SizeFormatter sizeFormatter;
     private DurationFormatter durationFormatter;
     private DownloadSpeedFormatter downloadSpeedFormatter;
-    private NumberFormat percentageFormat;
     private QbittorrentFactory factory;
     private Map<String, String> rawQbittorrent;
 
@@ -27,8 +26,7 @@ public class QbittorrentTest {
         sizeFormatter = Mockito.mock(SizeFormatter.class);
         durationFormatter = Mockito.mock(DurationFormatter.class);
         downloadSpeedFormatter = Mockito.mock(DownloadSpeedFormatter.class);
-        percentageFormat = NumberFormat.getPercentInstance(Locale.US);
-        factory = new QbittorrentFactory(sizeFormatter, durationFormatter, downloadSpeedFormatter, percentageFormat);
+        factory = new QbittorrentFactory(sizeFormatter, durationFormatter, downloadSpeedFormatter);
         rawQbittorrent = new HashMap<>();
         rawQbittorrent.put("hash", UUID.randomUUID().toString());
         rawQbittorrent.put("name", "A torrent");
@@ -52,7 +50,7 @@ public class QbittorrentTest {
         Mockito.when(sizeFormatter.format(Long.parseLong(rawQbittorrent.get("size")))).thenReturn("1 MB");
         Assert.assertEquals("1 MB", qbittorrent.getSize());
         Assert.assertFalse(qbittorrent.isComplete());
-        Assert.assertEquals("42%", qbittorrent.getProgress());
+        Assert.assertEquals("0.42", qbittorrent.getProgress());
         Assert.assertEquals(rawQbittorrent.get("state"), qbittorrent.getState());
         DownloadSpeed speed = new DownloadSpeed(Long.parseLong(rawQbittorrent.get("dlspeed")), "second");
         Mockito.when(downloadSpeedFormatter.format(speed)).thenReturn("2 MB / second");

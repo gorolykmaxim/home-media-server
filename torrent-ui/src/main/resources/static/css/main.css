@@ -1,4 +1,24 @@
-.app-truncate {
-    overflow: hidden;
-    text-overflow: ellipsis;
+html, body {
+    margin: 0;
+    height: 100%;
+}
+.app-form-field {
+    padding: 0.5rem 0;
+}
+.app-padding {
+    padding: 0 1rem;
+}
+.app-background-color {
+    background-color: #f7f7f7;
+}
+.app-fab--absolute {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+}
+@media(min-width: 1024px) {
+    .app-fab--absolute {
+        bottom: 1.5rem;
+        right: 1.5rem;
+    }
 }

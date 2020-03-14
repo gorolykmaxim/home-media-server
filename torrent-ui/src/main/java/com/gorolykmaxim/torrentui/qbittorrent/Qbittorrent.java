@@ -6,7 +6,6 @@ import com.gorolykmaxim.torrentui.common.DurationFormatter;
 import com.gorolykmaxim.torrentui.common.SizeFormatter;
 import com.gorolykmaxim.torrentui.model.DownloadingTorrent;
 
-import java.text.NumberFormat;
 import java.time.Duration;
 import java.util.Objects;
 
@@ -18,13 +17,11 @@ public class Qbittorrent implements DownloadingTorrent {
     private final DownloadSpeed downloadSpeed;
     private final Duration timeRemaining;
     private SizeFormatter sizeFormatter;
-    private NumberFormat percentageFormat;
     private DurationFormatter durationFormatter;
     private DownloadSpeedFormatter downloadSpeedFormatter;
 
     Qbittorrent(String id, String name, long size, double progress, String state, DownloadSpeed downloadSpeed, Duration timeRemaining,
-                SizeFormatter sizeFormatter, NumberFormat percentageFormat, DurationFormatter durationFormatter,
-                DownloadSpeedFormatter downloadSpeedFormatter) {
+                SizeFormatter sizeFormatter, DurationFormatter durationFormatter, DownloadSpeedFormatter downloadSpeedFormatter) {
         this.id = id;
         this.name = name;
         this.size = size;
@@ -33,7 +30,6 @@ public class Qbittorrent implements DownloadingTorrent {
         this.downloadSpeed = downloadSpeed;
         this.timeRemaining = timeRemaining;
         this.sizeFormatter = sizeFormatter;
-        this.percentageFormat = percentageFormat;
         this.durationFormatter = durationFormatter;
         this.downloadSpeedFormatter = downloadSpeedFormatter;
     }
@@ -60,7 +56,7 @@ public class Qbittorrent implements DownloadingTorrent {
 
     @Override
     public String getProgress() {
-        return percentageFormat.format(progress);
+        return Double.toString(progress);
     }
 
     @Override

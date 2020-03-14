@@ -62,11 +62,9 @@ public class TorrentUiApplication {
         SizeFormatter sizeFormatter = new SizeFormatter();
         DurationFormatter durationFormatter = new DurationFormatter(durationFormat, false);
         DownloadSpeedFormatter downloadSpeedFormatter = new DownloadSpeedFormatter(downloadSpeedFormat, sizeFormatter);
-        NumberFormat percentFormat = NumberFormat.getPercentInstance(Locale.US);
         QbittorrentAuthorization authorization = new QbittorrentAuthorization(restTemplate, userName, password, uri,
                 keyValueRepository);
-        QbittorrentFactory factory = new QbittorrentFactory(sizeFormatter, durationFormatter, downloadSpeedFormatter,
-                percentFormat);
+        QbittorrentFactory factory = new QbittorrentFactory(sizeFormatter, durationFormatter, downloadSpeedFormatter);
         return new QbittorrentService(restTemplate, authorization, factory, uri);
     }
 

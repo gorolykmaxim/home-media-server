@@ -17,14 +17,12 @@ public class QbittorrentFactory {
     private SizeFormatter sizeFormatter;
     private DurationFormatter durationFormatter;
     private DownloadSpeedFormatter downloadSpeedFormatter;
-    private NumberFormat percentageFormat;
     private final Set<String> mandatoryFields;
 
-    public QbittorrentFactory(SizeFormatter sizeFormatter, DurationFormatter durationFormatter, DownloadSpeedFormatter downloadSpeedFormatter, NumberFormat percentageFormat) {
+    public QbittorrentFactory(SizeFormatter sizeFormatter, DurationFormatter durationFormatter, DownloadSpeedFormatter downloadSpeedFormatter) {
         this.sizeFormatter = sizeFormatter;
         this.durationFormatter = durationFormatter;
         this.downloadSpeedFormatter = downloadSpeedFormatter;
-        this.percentageFormat = percentageFormat;
         mandatoryFields = new HashSet<>(Arrays.asList("hash", "name", "size", "progress", "dlspeed", "eta", "state"));
     }
 
@@ -47,7 +45,6 @@ public class QbittorrentFactory {
                 new DownloadSpeed(Long.parseLong(qbittorrent.get("dlspeed")), "second"),
                 Duration.ofSeconds(Long.parseLong(qbittorrent.get("eta"))),
                 sizeFormatter,
-                percentageFormat,
                 durationFormatter,
                 downloadSpeedFormatter);
     }
