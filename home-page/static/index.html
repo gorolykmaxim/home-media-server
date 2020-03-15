@@ -70,6 +70,23 @@
                     <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3-desktop">
                         <div class="mdc-card">
                             <div class="mdc-card__primary-action">
+                                <div class="mdc-card__media mdc-card__media--square" style="background-image: url(thumbnail_placeholder.jpg)"></div>
+                                <div class="app-padding">
+                                    <h2 class="mdc-typography mdc-typography--headline6">Thumbnail</h2>
+                                    <div class="mdc-typography mdc-typography--body2">Service that extracts thumbnails from video files.</div>
+                                </div>
+                            </div>
+                            <div class="mdc-card__actions">
+                                <a id="thumbnail-link" class="mdc-button mdc-card__action mdc-card__action--button" href="">
+                                    <div class="mdc-button__ripple"></div>
+                                    <span class="mdc-button__label">Go to web interface</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3-desktop">
+                        <div class="mdc-card">
+                            <div class="mdc-card__primary-action">
                                 <div class="mdc-card__media mdc-card__media--square" style="background-image: url(https://www.plex.tv/wp-content/uploads/2018/01/pmp-icon-1.png)"></div>
                                 <div class="app-padding">
                                     <h2 class="mdc-typography mdc-typography--headline6">Plex Media Server</h2>
@@ -108,6 +125,7 @@
         <script type="application/javascript">
             document.getElementById('watched-link').setAttribute('href', 'http://' + location.hostname + ':8082/');
             document.getElementById('torrent-link').setAttribute('href', 'http://' + location.hostname + ':8081/');
+            document.getElementById('thumbnail-link').setAttribute('href', 'http://' + location.hostname + ':8083/');
             document.getElementById('plex-link').setAttribute('href', 'http://' + location.hostname + ':32400/web');
             document.getElementById('qbittorrent-link').setAttribute('href', 'http://' + location.hostname + ':8080/');
         </script>
