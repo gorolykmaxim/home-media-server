@@ -6,13 +6,16 @@ public abstract class VideoEvent implements Runnable {
     private final long videoId;
     private final LocalDateTime dateTime;
     private VideoRepository repository;
-    private VideoFileService service;
+    private VideoFileService videoFileService;
+    private VideoThumbnailService videoThumbnailService;
 
-    public VideoEvent(long videoId, LocalDateTime dateTime, VideoRepository repository, VideoFileService service) {
+    public VideoEvent(long videoId, LocalDateTime dateTime, VideoRepository repository, VideoFileService fileService,
+                      VideoThumbnailService thumbnailService) {
         this.videoId = videoId;
         this.dateTime = dateTime;
         this.repository = repository;
-        this.service = service;
+        this.videoFileService = fileService;
+        this.videoThumbnailService = thumbnailService;
     }
 
     @Override
@@ -20,7 +23,8 @@ public abstract class VideoEvent implements Runnable {
         Video video = repository.findById(videoId).orElse(new Video(videoId));
         process(video);
         video.setLastPlayDate(dateTime);
-        video.updateRelativePathIfNecessary(service);
+        video.updateRelativePathIfNecessary(videoFileService);
+        video.createThumbnailIfPossible(videoThumbnailService);
         repository.save(video);
     }
 

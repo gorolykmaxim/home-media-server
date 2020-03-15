@@ -57,6 +57,14 @@ public class Video {
         }
     }
 
+    public void createThumbnailIfPossible(VideoThumbnailService service) {
+        if (relativePath == null) {
+            // We don't know the relative path to the video file yet, so we won't be able to generate a thumbnail for it.
+            return;
+        }
+        service.createThumbnailForVideo(getRelativePath(), Long.toString(id));
+    }
+
     public boolean hasAllInformation() {
         return name != null && timePlayed != null && totalTime != null;
     }

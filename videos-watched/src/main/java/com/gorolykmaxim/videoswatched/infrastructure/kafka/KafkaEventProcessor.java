@@ -2,10 +2,7 @@ package com.gorolykmaxim.videoswatched.infrastructure.kafka;
 
 import com.gorolykmaxim.videoswatched.domain.notification.Notification;
 import com.gorolykmaxim.videoswatched.domain.notification.NotificationRepository;
-import com.gorolykmaxim.videoswatched.domain.video.VideoFileService;
-import com.gorolykmaxim.videoswatched.domain.video.VideoPlayedEvent;
-import com.gorolykmaxim.videoswatched.domain.video.VideoProgressChangedEvent;
-import com.gorolykmaxim.videoswatched.domain.video.VideoRepository;
+import com.gorolykmaxim.videoswatched.domain.video.*;
 import org.slf4j.Logger;
 import org.springframework.kafka.annotation.KafkaListener;
 
@@ -14,14 +11,17 @@ import javax.transaction.Transactional;
 public class KafkaEventProcessor {
     private VideoRepository videoRepository;
     private NotificationRepository notificationRepository;
-    private VideoFileService service;
+    private VideoFileService videoFileService;
+    private VideoThumbnailService thumbnailService;
     private Logger logger;
 
     public KafkaEventProcessor(VideoRepository videoRepository, NotificationRepository notificationRepository,
-                               VideoFileService service, Logger logger) {
+                               VideoFileService fileService, VideoThumbnailService thumbnailService,
+                               Logger logger) {
         this.videoRepository = videoRepository;
         this.notificationRepository = notificationRepository;
-        this.service = service;
+        this.videoFileService = fileService;
+        this.thumbnailService = thumbnailService;
         this.logger = logger;
     }
 
@@ -38,7 +38,8 @@ public class KafkaEventProcessor {
                             event.getVideoName(),
                             event.getTimePlayed(),
                             videoRepository,
-                            service
+                            videoFileService,
+                            thumbnailService
                     ).run();
                     break;
                 case timeline:
@@ -48,7 +49,8 @@ public class KafkaEventProcessor {
                             event.getTimePlayed(),
                             event.getTotalTime(),
                             videoRepository,
-                            service
+                            videoFileService,
+                            thumbnailService
                     ).run();
                     break;
             }

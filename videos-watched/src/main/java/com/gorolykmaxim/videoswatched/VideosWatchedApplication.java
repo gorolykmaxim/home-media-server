@@ -3,8 +3,10 @@ package com.gorolykmaxim.videoswatched;
 import com.gorolykmaxim.videoswatched.domain.notification.NotificationRepository;
 import com.gorolykmaxim.videoswatched.domain.video.VideoFileService;
 import com.gorolykmaxim.videoswatched.domain.video.VideoRepository;
+import com.gorolykmaxim.videoswatched.domain.video.VideoThumbnailService;
 import com.gorolykmaxim.videoswatched.infrastructure.FileSystemVideoFileService;
 import com.gorolykmaxim.videoswatched.infrastructure.kafka.KafkaEventProcessor;
+import com.gorolykmaxim.videoswatched.infrastructure.thumbnail.RemoteVideoThumbnailService;
 import com.gorolykmaxim.videoswatched.readmodel.VideoGroupReadModelRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Clock;
@@ -24,13 +27,12 @@ import java.time.Clock;
 public class VideosWatchedApplication {
     @Value("${videos-watched.library-root}")
     private String libraryRoot;
-
     @Value("${videos-watched.duration-format}")
     private String durationFormat;
-
+    @Value("${videos-watched.thumbnail.base-uri}")
+    private String thumbnailBaseUri;
     @Autowired
     private VideoRepository videoRepository;
-
     @Autowired
     private NotificationRepository notificationRepository;
 
@@ -44,8 +46,9 @@ public class VideosWatchedApplication {
     public KafkaEventProcessor eventProcessor() {
         Logger logger = LoggerFactory.getLogger(VideosWatchedApplication.class);
         Path libraryRootPath = Paths.get(libraryRoot);
-        VideoFileService service = new FileSystemVideoFileService(libraryRootPath, notificationRepository);
-        return new KafkaEventProcessor(videoRepository, notificationRepository, service, logger);
+        VideoFileService fileService = new FileSystemVideoFileService(libraryRootPath, notificationRepository);
+        VideoThumbnailService thumbnailService = new RemoteVideoThumbnailService(URI.create(thumbnailBaseUri));
+        return new KafkaEventProcessor(videoRepository, notificationRepository, fileService, thumbnailService, logger);
     }
 
     public static void main(String[] args) {

@@ -5,6 +5,7 @@ import com.gorolykmaxim.videoswatched.domain.notification.NotificationRepository
 import com.gorolykmaxim.videoswatched.domain.video.Video;
 import com.gorolykmaxim.videoswatched.domain.video.VideoFileService;
 import com.gorolykmaxim.videoswatched.domain.video.VideoRepository;
+import com.gorolykmaxim.videoswatched.domain.video.VideoThumbnailService;
 import com.gorolykmaxim.videoswatched.infrastructure.kafka.EventProcessingException;
 import com.gorolykmaxim.videoswatched.infrastructure.kafka.KafkaEventProcessor;
 import com.gorolykmaxim.videoswatched.infrastructure.kafka.KafkaVideoEvent;
@@ -26,7 +27,8 @@ import static org.mockito.Mockito.*;
 public class KafkaEventProcessingTest {
     private VideoRepository videoRepository;
     private NotificationRepository notificationRepository;
-    private VideoFileService service;
+    private VideoFileService fileService;
+    private VideoThumbnailService thumbnailService;
     private KafkaEventProcessor processor;
     private KafkaVideoEvent event;
     private Video video;
@@ -45,12 +47,13 @@ public class KafkaEventProcessingTest {
         video = new Video(event.getVideoId());
         videoRepository = mock(VideoRepository.class);
         notificationRepository = mock(NotificationRepository.class);
-        service = mock(VideoFileService.class);
+        fileService = mock(VideoFileService.class);
+        thumbnailService = mock(VideoThumbnailService.class);
         newVideoCaptor = ArgumentCaptor.forClass(Video.class);
         notificationCaptor = ArgumentCaptor.forClass(Notification.class);
         when(videoRepository.findById(event.getVideoId())).thenReturn(Optional.of(video));
-        when(service.resolvePathToVideoFile(event.getVideoName())).thenReturn(Paths.get("The Office"));
-        processor = new KafkaEventProcessor(videoRepository, notificationRepository, service, logger);
+        when(fileService.resolvePathToVideoFile(event.getVideoName())).thenReturn(Paths.get("The Office"));
+        processor = new KafkaEventProcessor(videoRepository, notificationRepository, fileService, thumbnailService, logger);
     }
 
     @Test
@@ -117,7 +120,7 @@ public class KafkaEventProcessingTest {
         // when
         processor.handleVideoEvent(event);
         // then
-        assertEquals(service.resolvePathToVideoFile(video.getName()), video.getRelativePath());
+        assertEquals(fileService.resolvePathToVideoFile(video.getName()), video.getRelativePath());
     }
 
     @Test
@@ -127,7 +130,7 @@ public class KafkaEventProcessingTest {
         // when
         processor.handleVideoEvent(event);
         // then
-        assertEquals(service.resolvePathToVideoFile(video.getName()), video.getRelativePath());
+        assertEquals(fileService.resolvePathToVideoFile(video.getName()), video.getRelativePath());
     }
 
     @Test
@@ -138,10 +141,10 @@ public class KafkaEventProcessingTest {
             video.setName(event.getVideoName());
             Path oldRelativePath = Paths.get("The Office");
             Path newRelativePath = Paths.get("The Office Season 1");
-            when(service.resolvePathToVideoFile(event.getVideoName())).thenReturn(oldRelativePath);
-            when(service.exists(oldRelativePath.resolve(event.getVideoName()))).thenReturn(false);
-            video.updateRelativePathIfNecessary(service);
-            when(service.resolvePathToVideoFile(event.getVideoName())).thenReturn(newRelativePath);
+            when(fileService.resolvePathToVideoFile(event.getVideoName())).thenReturn(oldRelativePath);
+            when(fileService.exists(oldRelativePath.resolve(event.getVideoName()))).thenReturn(false);
+            video.updateRelativePathIfNecessary(fileService);
+            when(fileService.resolvePathToVideoFile(event.getVideoName())).thenReturn(newRelativePath);
             // when
             processor.handleVideoEvent(event);
             // then
@@ -157,15 +160,47 @@ public class KafkaEventProcessingTest {
             video.setName(event.getVideoName());
             Path existingPath = Paths.get("The Office");
             Path newRelativePath = Paths.get("The Office Season 2");
-            when(service.resolvePathToVideoFile(event.getVideoName())).thenReturn(existingPath);
-            when(service.exists(existingPath.resolve(event.getVideoName()))).thenReturn(true);
-            video.updateRelativePathIfNecessary(service);
-            when(service.resolvePathToVideoFile(event.getVideoName())).thenReturn(newRelativePath);
+            when(fileService.resolvePathToVideoFile(event.getVideoName())).thenReturn(existingPath);
+            when(fileService.exists(existingPath.resolve(event.getVideoName()))).thenReturn(true);
+            video.updateRelativePathIfNecessary(fileService);
+            when(fileService.resolvePathToVideoFile(event.getVideoName())).thenReturn(newRelativePath);
             // when
             processor.handleVideoEvent(event);
             // then
             assertEquals(existingPath, video.getRelativePath());
         }
+    }
+
+    @Test
+    public void shouldNotAttemptToCreateAThumbnailByFirstTimelineEvent() {
+        // given
+        event.setType(KafkaVideoEvent.Type.timeline);
+        // when
+        processor.handleVideoEvent(event);
+        // then
+        verify(thumbnailService, never()).createThumbnailForVideo(any(), any());
+    }
+
+    @Test
+    public void shouldCreateAThumbnailForAVideoByATimelineEventIfRelativePathToVideoIsAlreadyKnown() {
+        // given
+        video.setName(event.getVideoName());
+        video.updateRelativePathIfNecessary(fileService);
+        event.setType(KafkaVideoEvent.Type.timeline);
+        // when
+        processor.handleVideoEvent(event);
+        // then
+        verify(thumbnailService).createThumbnailForVideo(video.getRelativePath(), video.getId().toString());
+    }
+
+    @Test
+    public void shouldCreateAThumbnailForAVideoByAProgressEvent() {
+        // given
+        event.setType(KafkaVideoEvent.Type.progress);
+        // when
+        processor.handleVideoEvent(event);
+        // then
+        verify(thumbnailService).createThumbnailForVideo(video.getRelativePath(), video.getId().toString());
     }
 
     @Test

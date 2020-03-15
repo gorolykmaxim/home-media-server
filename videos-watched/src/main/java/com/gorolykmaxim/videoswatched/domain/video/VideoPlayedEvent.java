@@ -7,8 +7,9 @@ public class VideoPlayedEvent extends VideoEvent {
     private final long timePlayed;
 
     public VideoPlayedEvent(long videoId, LocalDateTime dateTime, String videoName, long timePlayed,
-                            VideoRepository repository, VideoFileService service) {
-        super(videoId, dateTime, repository, service);
+                            VideoRepository repository, VideoFileService fileService,
+                            VideoThumbnailService thumbnailService) {
+        super(videoId, dateTime, repository, fileService, thumbnailService);
         this.videoName = videoName;
         this.timePlayed = timePlayed;
     }

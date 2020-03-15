@@ -7,8 +7,9 @@ public class VideoProgressChangedEvent extends VideoEvent {
     private final long totalTime;
 
     public VideoProgressChangedEvent(long videoId, LocalDateTime dateTime, long timePlayed, long totalTime,
-                                     VideoRepository repository, VideoFileService service) {
-        super(videoId, dateTime, repository, service);
+                                     VideoRepository repository, VideoFileService fileService,
+                                     VideoThumbnailService thumbnailService) {
+        super(videoId, dateTime, repository, fileService, thumbnailService);
         this.timePlayed = timePlayed;
         this.totalTime = totalTime;
     }
