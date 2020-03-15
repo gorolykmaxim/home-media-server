@@ -1,2 +1,3 @@
 include('torrent-ui')
 include('videos-watched')
+include('thumbnail')

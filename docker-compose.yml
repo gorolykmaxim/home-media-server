@@ -95,9 +95,25 @@ services:
     ports:
     - 8082:8080
     restart: always
+  # service that extracts thumbnails from video files
+  thumbnail:
+    image: gorolykmaxim/thumbnail:1.0.0
+    container_name: thumbnail
+    user: '${USER_ID}:${GROUP_ID}'
+    environment:
+      - SERVER_PORT=8080
+      - THUMBNAIL_ROOT_THUMBNAIL_FOLDER=/data
+      - THUMBNAIL_ROOT_VIDEO_FOLDER=/media
+      - THUMBNAIL_RESOLUTION=1280x720
+    volumes:
+    - ${MEDIA_FOLDER_PATH}:/media
+    - ${THUMBNAIL_FOLDER_PATH}:/data
+    ports:
+    - 8083:8080
+    restart: always
   # service that provides links to all services in the media server, that have web UI
   home-page:
-    image: gorolykmaxim/home-page:1.1.1
+    image: gorolykmaxim/home-page:1.2.0
     container_name: home-page
     ports:
     - 80:80

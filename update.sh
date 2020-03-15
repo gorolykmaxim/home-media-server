@@ -26,10 +26,12 @@ export USER_ID=$(id -u "${USER_NAME}")
 export GROUP_ID=$(id -g "${USER_NAME}")
 export ROOT_FOLDER_PATH=$(get_root_folder_path)
 export MEDIA_FOLDER_PATH=${ROOT_FOLDER_PATH}/media
+export THUMBNAIL_FOLDER_PATH=${ROOT_FOLDER_PATH}/thumbnail
 
 # Prepare directories for container mounting
 mkdir -p "${ROOT_FOLDER_PATH}"
 mkdir -p "${MEDIA_FOLDER_PATH}"
+mkdir -p "${THUMBNAIL_FOLDER_PATH}"
 
 # Deploy containers
 compose
