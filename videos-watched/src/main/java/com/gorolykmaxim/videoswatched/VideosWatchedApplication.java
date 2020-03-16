@@ -43,12 +43,16 @@ public class VideosWatchedApplication {
     }
 
     @Bean
+    public VideoThumbnailService thumbnailService() {
+        return new RemoteVideoThumbnailService(URI.create(thumbnailBaseUri));
+    }
+
+    @Bean
     public KafkaEventProcessor eventProcessor() {
         Logger logger = LoggerFactory.getLogger(VideosWatchedApplication.class);
         Path libraryRootPath = Paths.get(libraryRoot);
         VideoFileService fileService = new FileSystemVideoFileService(libraryRootPath, notificationRepository);
-        VideoThumbnailService thumbnailService = new RemoteVideoThumbnailService(URI.create(thumbnailBaseUri));
-        return new KafkaEventProcessor(videoRepository, notificationRepository, fileService, thumbnailService, logger);
+        return new KafkaEventProcessor(videoRepository, notificationRepository, fileService, thumbnailService(), logger);
     }
 
     public static void main(String[] args) {

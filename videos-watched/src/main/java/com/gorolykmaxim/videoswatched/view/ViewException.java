@@ -2,7 +2,11 @@ package com.gorolykmaxim.videoswatched.view;
 
 public class ViewException extends RuntimeException {
     public static ViewException showWatchedVideoGroups(Throwable cause) {
-        return new ViewException("show watched video groups", cause);
+        return new ViewException("show latest watched videos", cause);
+    }
+
+    public static ViewException showVideoGroupWatchHistory(int groupId, Throwable cause) {
+        return new ViewException(String.format("show watch history of videos from the group with ID %d", groupId), cause);
     }
 
     public static ViewException discardNotifications(Throwable cause) {

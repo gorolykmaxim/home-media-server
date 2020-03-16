@@ -5,6 +5,7 @@ import com.gorolykmaxim.videoswatched.domain.notification.NotificationRepository
 import com.gorolykmaxim.videoswatched.domain.video.Video;
 import com.gorolykmaxim.videoswatched.domain.video.VideoFileService;
 import com.gorolykmaxim.videoswatched.domain.video.VideoRepository;
+import com.gorolykmaxim.videoswatched.domain.video.VideoThumbnailService;
 import com.gorolykmaxim.videoswatched.readmodel.VideoGroupReadModel;
 import com.gorolykmaxim.videoswatched.readmodel.VideoGroupReadModelRepository;
 import com.gorolykmaxim.videoswatched.readmodel.VideoReadModel;
@@ -20,7 +21,10 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.StreamSupport;
 
 import static org.junit.Assert.assertEquals;
@@ -29,7 +33,8 @@ import static org.mockito.Mockito.*;
 public class WebViewTest {
     private VideoGroupReadModel expectedGroup;
     private VideoRepository videoRepository;
-    private VideoFileService service;
+    private VideoFileService fileService;
+    private VideoThumbnailService thumbnailService;
     private String durationFormat;
     private Clock clock;
     private NotificationRepository notificationRepository;
@@ -42,21 +47,22 @@ public class WebViewTest {
         clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
         videoRepository = mock(VideoRepository.class);
         notificationRepository = mock(NotificationRepository.class);
-        service = mock(VideoFileService.class);
+        fileService = mock(VideoFileService.class);
+        thumbnailService = mock(VideoThumbnailService.class);
         when(videoRepository.findAll()).thenReturn(Collections.emptyList());
         when(notificationRepository.findAll()).thenReturn(Collections.emptyList());
         videoGroupReadModelRepository = new VideoGroupReadModelRepository(videoRepository, durationFormat, clock);
-        controller = new VideosWatchedController(videoGroupReadModelRepository, videoRepository, notificationRepository);
+        controller = new VideosWatchedController(videoGroupReadModelRepository, thumbnailService, videoRepository, notificationRepository);
         generateVideoWatchHistory();
         expectedGroup = getExpectedGroup();
     }
 
     @Test
-    public void shouldShowGroupsOfWatchedVideosThatHaveBeenCompletelyInitializedInTheirDescendingLastPlayOrder() {
+    public void shouldShowLatestWatchedVideosThatHaveBeenCompletelyInitializedInTheirDescendingLastPlayOrder() {
         // when
-        ModelAndView modelAndView = controller.showWatchedVideoGroups();
+        ModelAndView modelAndView = controller.showLatestWatchedVideos();
         // then
-        assertEquals("watched-video-groups", modelAndView.getViewName());
+        assertEquals("latest-watched-videos", modelAndView.getViewName());
         Iterable<VideoGroupReadModel> videoGroups = (List<VideoGroupReadModel>) modelAndView.getModel().get("groups");
         List<VideoReadModel> videoReadModels = new ArrayList<>();
         videoGroups.forEach(videoGroupReadModel -> videoGroupReadModel.getVideos().forEach(videoReadModels::add));
@@ -80,7 +86,7 @@ public class WebViewTest {
                 Notification.createNew("Notification 3")
         ));
         // when
-        ModelAndView modelAndView = controller.showWatchedVideoGroups();
+        ModelAndView modelAndView = controller.showLatestWatchedVideos();
         // then
         Iterable<Notification> notifications = (Iterable<Notification>) modelAndView.getModel().get("notifications");
         int i = 1;
@@ -92,7 +98,7 @@ public class WebViewTest {
     @Test
     public void shouldShowNoNotifications() {
         // when
-        ModelAndView modelAndView = controller.showWatchedVideoGroups();
+        ModelAndView modelAndView = controller.showLatestWatchedVideos();
         // then
         Iterable<Notification> notifications = (Iterable<Notification>) modelAndView.getModel().get("notifications");
         assertEquals(0, StreamSupport.stream(notifications.spliterator(), false).count());
@@ -103,7 +109,60 @@ public class WebViewTest {
         // given
         when(videoRepository.findAll()).thenThrow(new RuntimeException());
         // when
-        controller.showWatchedVideoGroups();
+        controller.showLatestWatchedVideos();
+    }
+
+    @Test
+    public void shouldShowWatchHistoryOfTheSpecifiedVideoGroup() {
+        // when
+        ModelAndView modelAndView = controller.showGroupWatchHistory(expectedGroup.getId());
+        // then
+        assertEquals("group-watch-history", modelAndView.getViewName());
+        VideoGroupReadModel group = (VideoGroupReadModel) modelAndView.getModel().get("group");
+        assertEquals(expectedGroup.getId(), group.getId());
+        assertEquals(expectedGroup.getName(), group.getName());
+        assertEquals(expectedGroup.getVideos(), group.getVideos());
+    }
+
+    @Test
+    public void shouldShowAllTheAvailableNotificationsAlongTheVideoGroupHistory() {
+        // given
+        when(notificationRepository.findAll()).thenReturn(Arrays.asList(
+                Notification.createNew("Notification 1"),
+                Notification.createNew("Notification 2"),
+                Notification.createNew("Notification 3")
+        ));
+        // when
+        ModelAndView modelAndView = controller.showGroupWatchHistory(expectedGroup.getId());
+        // then
+        Iterable<Notification> notifications = (Iterable<Notification>) modelAndView.getModel().get("notifications");
+        int i = 1;
+        for (Notification notification: notifications) {
+            assertEquals("Notification " + i++, notification.getContent());
+        }
+    }
+
+    @Test
+    public void shouldShowNoNotificationsAlongTheVideoGroupHistory() {
+        // when
+        ModelAndView modelAndView = controller.showGroupWatchHistory(expectedGroup.getId());
+        // then
+        Iterable<Notification> notifications = (Iterable<Notification>) modelAndView.getModel().get("notifications");
+        assertEquals(0, StreamSupport.stream(notifications.spliterator(), false).count());
+    }
+
+    @Test(expected = ViewException.class)
+    public void shouldFailToShowWatchHistoryOfTheSpecifiedVideoGroupAndThrowAnException() {
+        // given
+        when(videoRepository.findAll()).thenThrow(new RuntimeException());
+        // when
+        controller.showGroupWatchHistory(expectedGroup.getId());
+    }
+
+    @Test(expected = ViewException.class)
+    public void shouldFailToShowWatchHistoryOfAGroupThatDoesNotExist() {
+        // when
+        controller.showGroupWatchHistory(1);
     }
 
     @Test
@@ -174,8 +233,8 @@ public class WebViewTest {
             }
             video.setLastPlayDate(now.minusDays(i - 1));
             int groupNumber = i <= 2 ? 1 : 2;
-            when(service.resolvePathToVideoFile(video.getName())).thenReturn(Paths.get("Group " + groupNumber, "Folder"));
-            video.updateRelativePathIfNecessary(service);
+            when(fileService.resolvePathToVideoFile(video.getName())).thenReturn(Paths.get("Group " + groupNumber, "Folder"));
+            video.updateRelativePathIfNecessary(fileService);
             videos.add(video);
         }
         when(videoRepository.findAll()).thenReturn(videos);

@@ -2,7 +2,10 @@ package com.gorolykmaxim.videoswatched.infrastructure.thumbnail;
 
 import com.gorolykmaxim.videoswatched.domain.video.VideoThumbnailService;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.nio.file.Path;
@@ -24,5 +27,14 @@ public class RemoteVideoThumbnailService implements VideoThumbnailService {
         } catch (Exception e) {
             throw new ThumbnailCreationException(thumbnailName, relativeVideoPath, e);
         }
+    }
+
+    @Override
+    public ResponseEntity<?> downloadThumbnail(String thumbnailName) {
+        URI uri = UriComponentsBuilder.fromUri(baseUri.resolve("/api/thumbnail-image"))
+                .queryParam("name", thumbnailName)
+                .build()
+                .toUri();
+        return template.exchange(uri, HttpMethod.GET, null, byte[].class);
     }
 }

@@ -9,6 +9,7 @@ import java.time.Period;
 import java.util.Objects;
 
 public class VideoReadModel implements Comparable<VideoReadModel> {
+    private final long id;
     private final String name;
     private final Long timePlayed;
     private final Long totalTime;
@@ -16,13 +17,18 @@ public class VideoReadModel implements Comparable<VideoReadModel> {
     private final String durationFormat;
     private final Clock clock;
 
-    public VideoReadModel(String name, Long timePlayed, Long totalTime, LocalDateTime lastPlayDate, String durationFormat, Clock clock) {
+    public VideoReadModel(long id, String name, Long timePlayed, Long totalTime, LocalDateTime lastPlayDate, String durationFormat, Clock clock) {
+        this.id = id;
         this.name = name;
         this.timePlayed = timePlayed;
         this.totalTime = totalTime;
         this.lastPlayDate = lastPlayDate;
         this.durationFormat = durationFormat;
         this.clock = clock;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getName() {

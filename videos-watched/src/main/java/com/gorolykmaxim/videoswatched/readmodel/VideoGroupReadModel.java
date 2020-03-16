@@ -28,10 +28,14 @@ public class VideoGroupReadModel implements Comparable<VideoGroupReadModel> {
         return videos;
     }
 
+    public VideoReadModel getLatestWatchedVideo() {
+        return videos.first();
+    }
+
     @Override
     public int compareTo(VideoGroupReadModel o) {
-        VideoReadModel myLastVideo = videos.last();
-        VideoReadModel otherLastVideo = o.videos.last();
+        VideoReadModel myLastVideo = getLatestWatchedVideo();
+        VideoReadModel otherLastVideo = o.getLatestWatchedVideo();
         return myLastVideo.compareTo(otherLastVideo);
     }
 }
