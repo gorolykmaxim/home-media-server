@@ -76,7 +76,7 @@ services:
     restart: always
   # service that shows history of videos being watched through plex
   videos-watched:
-    image: gorolykmaxim/videos-watched:1.0.3
+    image: gorolykmaxim/videos-watched:1.1.0
     container_name: videos-watched
     environment:
       - SERVER_PORT=8080
@@ -86,6 +86,7 @@ services:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - SPRING_KAFKA_CONSUMER_GROUP_ID=videos-watched
       - SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET=earliest
+      - VIDEOS_WATCHED_THUMBNAIL_BASE_URI=http://thumbnail:8080
       - VIDEOS_WATCHED_LIBRARY_ROOT=/media
       - VIDEOS_WATCHED_DURATION_FORMAT=m 'minutes' s 'seconds'
     user: '${USER_ID}:${GROUP_ID}'

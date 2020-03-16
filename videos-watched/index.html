@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Videos watched</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="theme-color" content="#6200ee"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+    <link href="https://unpkg.com/material-components-web@v4.0.0/dist/material-components-web.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://unpkg.com/material-components-web@v4.0.0/dist/material-components-web.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <style>
+        html, body {
+            margin: 0;
+            height: 100%;
+        }
+        .app-padding {
+            padding: 1rem;
+        }
+        .app-background-color {
+            background-color: #f7f7f7;
+        }
+        .app-break-text {
+            overflow-wrap: break-word;
+        }
+        .app-full-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        .app-background-image {
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
+    <body class="app-background-color">
+        <header class="mdc-top-app-bar mdc-top-app-bar--fixed">
+            <div class="mdc-top-app-bar__row">
+                <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                    <span class="mdc-top-app-bar__title">Videos Watched</span>
+                </section>
+            </div>
+        </header>
+        <div class="mdc-top-app-bar--fixed-adjust app-full-screen">
+            <div id="carouselExampleControls" class="carousel slide app-full-screen" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleControls" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleControls" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner app-full-screen">
+                    <div class="carousel-item active app-full-screen app-background-image" style="background-image: url('http://localhost:8083/api/thumbnail-image?name=1')">
+                        <div class="carousel-caption">
+                            <h3 class="app-break-text">'Boruto_Naruto_Next_Generations_[40]_[Nazel]_[AniMedia.TV]'</h3>
+                            <h5 class="app-break-text">Boruto_Naruto_Next_Generations_[AniMedia.TV]</h5>
+                            <p>Today</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item app-full-screen app-background-image" style="background-image: url('http://localhost:8083/api/thumbnail-image?name=2')">
+                        <div class="carousel-caption">
+                            <h3 class="app-break-text">'Boruto_Naruto_Next_Generations_[40]_[Nazel]_[AniMedia.TV]'</h3>
+                            <h4 class="app-break-text">Boruto_Naruto_Next_Generations_[AniMedia.TV]</h4>
+                            <p>2 days ago</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item app-full-screen app-background-image" style="background-image: url('http://localhost:8083/api/thumbnail-image?name=3')">
+                        <div class="carousel-caption">
+                            <h3 class="app-break-text">'Boruto_Naruto_Next_Generations_[40]_[Nazel]_[AniMedia.TV]'</h3>
+                            <h4 class="app-break-text">Boruto_Naruto_Next_Generations_[AniMedia.TV]</h4>
+                            <p>3 days ago</p>
+                        </div>
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+    </body>
+</html>
