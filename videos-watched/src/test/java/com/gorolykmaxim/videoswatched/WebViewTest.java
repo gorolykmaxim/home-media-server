@@ -27,17 +27,17 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class WebViewTest {
-    private String expectedGroupName;
+    private VideoGroupReadModel expectedGroup;
     private VideoRepository videoRepository;
     private VideoFileService service;
     private String durationFormat;
     private Clock clock;
     private NotificationRepository notificationRepository;
+    private VideoGroupReadModelRepository videoGroupReadModelRepository;
     private VideosWatchedController controller;
 
     @Before
     public void setUp() throws Exception {
-        expectedGroupName = "Mandalorian";
         durationFormat = "m 'minutes' s 'seconds'";
         clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
         videoRepository = mock(VideoRepository.class);
@@ -45,29 +45,14 @@ public class WebViewTest {
         service = mock(VideoFileService.class);
         when(videoRepository.findAll()).thenReturn(Collections.emptyList());
         when(notificationRepository.findAll()).thenReturn(Collections.emptyList());
-        VideoGroupReadModelRepository videoGroupReadModelRepository = new VideoGroupReadModelRepository(videoRepository, durationFormat, clock);
+        videoGroupReadModelRepository = new VideoGroupReadModelRepository(videoRepository, durationFormat, clock);
         controller = new VideosWatchedController(videoGroupReadModelRepository, videoRepository, notificationRepository);
+        generateVideoWatchHistory();
+        expectedGroup = getExpectedGroup();
     }
 
     @Test
     public void shouldShowGroupsOfWatchedVideosThatHaveBeenCompletelyInitializedInTheirDescendingLastPlayOrder() {
-        // given
-        List<Video> videos = new ArrayList<>();
-        LocalDateTime now = LocalDateTime.now();
-        for (int i = 1; i <= 4; i++) {
-            Video video = new Video(i);
-            video.setName("Video " + i);
-            if (i < 4) {
-                video.setTimePlayed(i * 100);
-                video.setTotalTime(i * 10000);
-            }
-            video.setLastPlayDate(now.minusDays(i - 1));
-            int groupNumber = i <= 2 ? 1 : 2;
-            when(service.resolvePathToVideoFile(video.getName())).thenReturn(Paths.get("Group " + groupNumber, "Folder"));
-            video.updateRelativePathIfNecessary(service);
-            videos.add(video);
-        }
-        when(videoRepository.findAll()).thenReturn(videos);
         // when
         ModelAndView modelAndView = controller.showWatchedVideoGroups();
         // then
@@ -124,11 +109,17 @@ public class WebViewTest {
     @Test
     public void shouldDirectUserToClearWatchHistoryConfirmationDialog() {
         // when
-        ModelAndView modelAndView = controller.confirmWatchHistoryClear(expectedGroupName);
+        ModelAndView modelAndView = controller.confirmWatchHistoryClear(expectedGroup.getId());
         // then
         assertEquals("confirm-watch-history-clear", modelAndView.getViewName());
         String groupName = (String) modelAndView.getModel().get("groupName");
-        assertEquals(expectedGroupName, groupName);
+        assertEquals(expectedGroup.getName(), groupName);
+    }
+
+    @Test(expected = ViewException.class)
+    public void shouldFailToDirectUserToClearWatchHistoryConfirmationDialogSinceSpecifiedGroupDoesNotExist() {
+        // when
+        controller.confirmWatchHistoryClear(1);
     }
 
     @Test
@@ -151,17 +142,49 @@ public class WebViewTest {
     @Test
     public void shouldClearWatchHistoryForTheSpecifiedGroupAndRedirectBackToTheRootPAge() {
         // when
-        String url = controller.clearWatchHistoryForGroup(expectedGroupName);
+        String url = controller.clearWatchHistoryForGroup(expectedGroup.getId());
         // then
         assertEquals("redirect:/", url);
-        verify(videoRepository).deleteAllByRelativePathStartingWith(expectedGroupName);
+        verify(videoRepository).deleteAllByRelativePathStartingWith(expectedGroup.getName());
     }
 
     @Test(expected = ViewException.class)
     public void shouldFailToClearWatchHistoryForTheSpecifiedGroupAndThrowAnException() {
         // given
-        doThrow(new RuntimeException()).when(videoRepository).deleteAllByRelativePathStartingWith(expectedGroupName);
+        doThrow(new RuntimeException()).when(videoRepository).deleteAllByRelativePathStartingWith(expectedGroup.getName());
         // when
-        controller.clearWatchHistoryForGroup(expectedGroupName);
+        controller.clearWatchHistoryForGroup(expectedGroup.getId());
+    }
+
+    @Test(expected = ViewException.class)
+    public void shouldFailToClearWatchHistoryForTheGroupThatDoesNotExist() {
+        // when
+        controller.clearWatchHistoryForGroup(1);
+    }
+
+    private void generateVideoWatchHistory() {
+        List<Video> videos = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        for (int i = 1; i <= 4; i++) {
+            Video video = new Video(i);
+            video.setName("Video " + i);
+            if (i < 4) {
+                video.setTimePlayed(i * 100);
+                video.setTotalTime(i * 10000);
+            }
+            video.setLastPlayDate(now.minusDays(i - 1));
+            int groupNumber = i <= 2 ? 1 : 2;
+            when(service.resolvePathToVideoFile(video.getName())).thenReturn(Paths.get("Group " + groupNumber, "Folder"));
+            video.updateRelativePathIfNecessary(service);
+            videos.add(video);
+        }
+        when(videoRepository.findAll()).thenReturn(videos);
+    }
+
+    private VideoGroupReadModel getExpectedGroup() {
+        return StreamSupport.stream(videoGroupReadModelRepository.findAll().spliterator(), false)
+                .filter(group -> group.getName().equals("Group 2"))
+                .findFirst()
+                .get();
     }
 }

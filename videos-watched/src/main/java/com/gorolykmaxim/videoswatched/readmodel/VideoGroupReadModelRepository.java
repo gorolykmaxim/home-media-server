@@ -7,6 +7,8 @@ import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class VideoGroupReadModelRepository {
     private VideoRepository videoRepository;
@@ -49,5 +51,18 @@ public class VideoGroupReadModelRepository {
         }
         groups.sort(null);
         return groups;
+    }
+
+    public Iterable<VideoReadModel> findTheLatestWatchedEpisodePerEachGroup() {
+        Iterable<VideoGroupReadModel> groups = findAll();
+        return StreamSupport.stream(groups.spliterator(), false)
+                .map(group -> group.getVideos().iterator().next())
+                .collect(Collectors.toList());
+    }
+
+    public Optional<VideoGroupReadModel> findGroupById(int groupId) {
+        return StreamSupport.stream(findAll().spliterator(), false)
+                .filter(group -> group.getId() == groupId)
+                .findFirst();
     }
 }

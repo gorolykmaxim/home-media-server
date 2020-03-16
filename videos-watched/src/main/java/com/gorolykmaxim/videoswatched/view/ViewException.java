@@ -9,8 +9,8 @@ public class ViewException extends RuntimeException {
         return new ViewException("discard notifications", cause);
     }
 
-    public static ViewException clearWatchHistoryForGroup(String groupName, Throwable cause) {
-        return new ViewException(String.format("clear watch history for group '%s'", groupName), cause);
+    public static ViewException clearWatchHistoryForGroup(int groupId, Throwable cause) {
+        return new ViewException(String.format("clear watch history for group with ID '%d'", groupId), cause);
     }
 
     public ViewException(String action, Throwable cause) {

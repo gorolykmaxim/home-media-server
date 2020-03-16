@@ -2,6 +2,8 @@ package com.gorolykmaxim.videoswatched.view;
 
 import com.gorolykmaxim.videoswatched.domain.notification.NotificationRepository;
 import com.gorolykmaxim.videoswatched.domain.video.VideoRepository;
+import com.gorolykmaxim.videoswatched.readmodel.VideoGroupDoesNotExistException;
+import com.gorolykmaxim.videoswatched.readmodel.VideoGroupReadModel;
 import com.gorolykmaxim.videoswatched.readmodel.VideoGroupReadModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,11 +40,16 @@ public class VideosWatchedController {
         }
     }
 
-    @GetMapping("clear-watch-history-for-group/{groupName}")
-    public ModelAndView confirmWatchHistoryClear(@PathVariable String groupName) {
-        ModelAndView modelAndView = new ModelAndView("confirm-watch-history-clear");
-        modelAndView.addObject("groupName", groupName);
-        return modelAndView;
+    @GetMapping("clear-watch-history-for-group/{groupId}")
+    public ModelAndView confirmWatchHistoryClear(@PathVariable int groupId) {
+        try {
+            VideoGroupReadModel group = videoGroupRepository.findGroupById(groupId).orElseThrow(() -> new VideoGroupDoesNotExistException(groupId));
+            ModelAndView modelAndView = new ModelAndView("confirm-watch-history-clear");
+            modelAndView.addObject("groupName", group.getName());
+            return modelAndView;
+        } catch (Exception e) {
+            throw ViewException.clearWatchHistoryForGroup(groupId, e);
+        }
     }
 
     @PostMapping("discard-notifications")
@@ -55,13 +62,14 @@ public class VideosWatchedController {
         }
     }
 
-    @PostMapping("clear-watch-history-for-group/{groupName}")
-    public String clearWatchHistoryForGroup(@PathVariable String groupName) {
+    @PostMapping("clear-watch-history-for-group/{groupId}")
+    public String clearWatchHistoryForGroup(@PathVariable int groupId) {
         try {
-            videoRepository.deleteAllByRelativePathStartingWith(groupName);
+            VideoGroupReadModel group = videoGroupRepository.findGroupById(groupId).orElseThrow(() -> new VideoGroupDoesNotExistException(groupId));
+            videoRepository.deleteAllByRelativePathStartingWith(group.getName());
             return "redirect:/";
         } catch (Exception e) {
-            throw ViewException.clearWatchHistoryForGroup(groupName, e);
+            throw ViewException.clearWatchHistoryForGroup(groupId, e);
         }
     }
 }

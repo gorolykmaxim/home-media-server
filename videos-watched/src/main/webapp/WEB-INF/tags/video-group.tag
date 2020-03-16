@@ -10,7 +10,7 @@
                     ${group.name}
                 </button>
             </h2>
-            <a class="btn btn-outline-danger app-accordion-button-height-fixture" href="/clear-watch-history-for-group/${group.name}">Clear watch history</a>
+            <a class="btn btn-outline-danger app-accordion-button-height-fixture" href="/clear-watch-history-for-group/${group.id}">Clear watch history</a>
         </div>
     </div>
     <div id="collapse-${group.id}" class="collapse" <c:if test="${parentContainer}">data-parent="#${parentContainer}"</c:if>>
