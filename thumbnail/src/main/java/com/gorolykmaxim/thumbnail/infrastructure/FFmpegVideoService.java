@@ -41,13 +41,13 @@ public class FFmpegVideoService implements VideoService {
     public void extractFrameAsImageFile(Path videoFilePath, Path outputImageFilePath, Duration startOffset) {
         try {
             FFmpegBuilder builder = new FFmpegBuilder()
+                    .setStartOffset(startOffset.getSeconds(), TimeUnit.SECONDS)
                     .addInput(videoFilePath.toString())
                     .overrideOutputFiles(true)
                     .addOutput(outputImageFilePath.toString())
                     .setVideoResolution(resolution)
                     .disableAudio()
                     .setFrames(1)
-                    .setStartOffset(startOffset.getSeconds(), TimeUnit.SECONDS)
                     .done();
             fmpegExecutor.createJob(builder).run();
         } catch (Exception e) {

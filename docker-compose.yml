@@ -97,7 +97,7 @@ services:
     restart: always
   # service that extracts thumbnails from video files
   thumbnail:
-    image: gorolykmaxim/thumbnail:1.0.1
+    image: gorolykmaxim/thumbnail:1.0.2
     container_name: thumbnail
     user: '${USER_ID}:${GROUP_ID}'
     environment:
